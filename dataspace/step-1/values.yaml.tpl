@@ -4,9 +4,9 @@ dataspace:
 registration:
   image: 
     name:
-      ghcr.io/inesdata/inesdata-registration-service
+      ghcr.io/dataspaceunit/ds-registration-service
     tag:
-      0.7.0
+      latest
 services:
   db:
     hostname: 
@@ -30,3 +30,10 @@ ingress:
   registration:
     hostname:
       registration-service-{{ keys.dataspace_name }}{{ '.ds.inesdata-project.eu' if keys.environment == 'PRO' else '.dev.ds.inesdata.upm' }}
+hostAliases:
+- ip: "192.168.49.2"
+  hostnames:
+  - "keycloak.dev.ed.inesdata.upm"
+  - "keycloak-admin.dev.ed.inesdata.upm"
+  - "minio.dev.ed.inesdata.upm"
+  - "console.minio-s3.dev.ed.inesdata.upm"

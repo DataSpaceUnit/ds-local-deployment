@@ -5,14 +5,14 @@ connector:
   dataspace: {{ keys.dataspace_name }}
   environment: {{ 'pro' if keys.environment == 'PRO' else 'dev' }}
   image:
-    name: ghcr.io/inesdata/inesdata-connector
-    tag: 0.9.1
+    name: ghcr.io/dataspaceunit/ds-connector
+    tag: latest
   replicas: 1
   jvmArgs: "{% if keys.environment == 'PRO'%}-Djavax.net.ssl.trustStore=/opt/connector/tls-cacerts/cacerts.jks -Djavax.net.ssl.trustStorePassword=inesdata{% endif %}"
   configuration:
     configFilePath: /opt/connector/config/connector-configuration.properties
   ingress:
-    hostname: {{ keys.connector_name }}-{{ keys.dataspace_name }}.{% if keys.environment == 'PRO'%}ds.inesdata-project.eu{% else %}dev.ds.inesdata.upm{% endif %}
+    hostname: {{ keys.connector_name }}.{% if keys.environment == 'PRO'%}ds.inesdata-project.eu{% else %}dev.ds.inesdata.upm{% endif %}
     protocol: {{ 'https' if keys.environment == 'PRO' else 'http' }}
   minio:
     accesskey: {{ keys.dataspace_name }}/{{ keys.connector_name }}/aws-access-key
@@ -31,8 +31,8 @@ connector:
 
 connectorInterface:
   image:
-    name: ghcr.io/inesdata/inesdata-connector-interface
-    tag: 0.10.0
+    name: ghcr.io/dataspaceunit/ds-connector-interface
+    tag: develop
   oauth2:
     client:
       dataspace-users
@@ -52,7 +52,7 @@ services:
     password: {{ keys.database.passwd }}
   keycloak:
     # comsrv prefix comes from the Helm release of the common services
-    hostname: {{ keys.keycloak_internal_hostname }}
+    hostname: {{ keys.keycloak_hostname }}
     external: {{ keys.keycloak_hostname }}
     protocol: {{ 'https' if keys.environment == 'PRO' else 'http' }}
   minio:
@@ -68,3 +68,11 @@ services:
     url: {{ keys.vault_url }}
     token: {{ keys.vault.token }}
     path: {{ keys.dataspace_name }}/{{ keys.connector_name }}/
+hostAliases:
+- ip: "192.168.49.2"
+  hostnames:
+  - "keycloak.dev.ed.inesdata.upm"
+  - "keycloak-admin.dev.ed.inesdata.upm"
+  - "minio.dev.ed.inesdata.upm"
+  - "console.minio-s3.dev.ed.inesdata.upm"
+  - "registration-service-demo.dev.ds.inesdata.upm"

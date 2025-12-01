@@ -1098,7 +1098,7 @@ def create_dataspace_value_files(name, environment):
     output = template.render(keys=keys)
     
     # Write the rendered template to a new file
-    output_path = f'dataspace/step-1/values.yaml.{name}'
+    output_path = f'dataspace/step-1/values-{name}.yaml'
     with open(output_path, 'w') as f:
         f.write(output)
 
@@ -1113,7 +1113,7 @@ def create_dataspace_value_files(name, environment):
     output = template.render(keys=keys)
 
     # Write the rendered template to a new file
-    output_path = f'dataspace/step-2/values.yaml.{name}'
+    output_path = f'dataspace/step-2/values-{name}.yaml'
     with open(output_path, 'w') as f:
         f.write(output)
 
@@ -1139,7 +1139,7 @@ def create_connector_value_files(dataspace_name, connector_name, environment):
     output = template.render(keys=keys)
     
     # Write the rendered template to a new file
-    output_path = f'connector/values.yaml.{connector_name}'
+    output_path = f'connector/values-{connector_name}.yaml'
     with open(output_path, 'w') as f:
         f.write(output)
 

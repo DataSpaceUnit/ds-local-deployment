@@ -1,20 +1,26 @@
 postgresql:
+  image:
+    repository: bitnamilegacy/postgresql
+    tag: 16.3.0-debian-12-r9
   auth:
-    postgresPassword: xxxxCHANGEMExxxx
+    postgresPassword: aPassword1234
     # We initially setup the database for keycloak
     username: keycloak
-    password: xxxxCHANGEMExxxx
+    password: aPassword1234
     database: keycloak
 keycloak:
+  image:
+    repository: bitnamilegacy/keycloak
+    tag: 24.0.4-debian-12-r1
   auth:
-    username: admin
-    password: inesdata
+    adminUser: admin
+    adminPassword: aPassword1234
   postgresql:
     enabled: false
   externalDatabase:
     host: "{{ .Release.Name }}-postgresql"
     user: keycloak
-    password: xxxxCHANGEMExxxx
+    password: aPassword1234
     database: keycloak
     port: 5432
   ingress:
@@ -24,7 +30,15 @@ keycloak:
     enabled: true
     hostname: keycloak-admin.dev.ed.inesdata.upm
   keycloakConfigCli:
+    image:
+      repository: bitnamilegacy/keycloak-config-cli
+      tag: 5.12.0-debian-12-r4
     enabled: true
+    extraEnv:
+      - name: KEYCLOAK_USER
+        value: admin
+      - name: KEYCLOAK_PASSWORD
+        value: aPassword1234
     configuration:
       master.json: |
         {
@@ -36,7 +50,7 @@ keycloak:
 minio:
   mode: standalone
   rootUser: admin
-  rootPassword: xxxxCHANGEMExxxx
+  rootPassword: aPassword1234
   replicas: 1
   persistence:
     size: 100Gi
