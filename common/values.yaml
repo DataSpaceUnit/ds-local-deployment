@@ -25,10 +25,10 @@ keycloak:
     port: 5432
   ingress:
     enabled: true
-    hostname: keycloak.dev.ed.inesdata.upm
+    hostname: keycloak.dev.ed.dataspaceunit.upm
   adminIngress:
     enabled: true
-    hostname: keycloak-admin.dev.ed.inesdata.upm
+    hostname: keycloak-admin.dev.ed.dataspaceunit.upm
   keycloakConfigCli:
     image:
       repository: bitnamilegacy/keycloak-config-cli
@@ -44,7 +44,7 @@ keycloak:
         {
           "realm" : "master",
           "attributes": {
-            "frontendUrl": "http://keycloak-admin.dev.ed.inesdata.upm"
+            "frontendUrl": "http://keycloak-admin.dev.ed.dataspaceunit.upm"
           }
         }
 minio:
@@ -57,11 +57,11 @@ minio:
   ingress:
     enabled: true
     hosts:
-      - minio.dev.ed.inesdata.upm
+      - minio.dev.ed.dataspaceunit.upm
   consoleIngress:
     enabled: true
     hosts:
-      - console.minio-s3.dev.ed.inesdata.upm
+      - console.minio-s3.dev.ed.dataspaceunit.upm
   resources:
     requests:
       memory: 2Gi

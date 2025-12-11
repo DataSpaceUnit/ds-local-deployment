@@ -4,7 +4,7 @@ dataspace:
 backend:
   image: 
     name:
-      ghcr.io/inesdata/inesdata-public-portal-backend
+      ghcr.io/dataspaceunit/dataspaceunit-public-portal-backend
     tag:
       0.9.0
   api:
@@ -16,10 +16,10 @@ backend:
       {{ keys.web_portal_secrets.STRAPI_APP_KEYS }}
   catalog:
     connector:
-      {{ 'https' if keys.environment == 'PRO' else 'http' }}://CHANGEME-conn-NAME-{{ keys.dataspace_name }}{{ '.ds.inesdata-project.eu' if keys.environment == 'PRO' else ':19193' }}
+      {{ 'https' if keys.environment == 'PRO' else 'http' }}://CHANGEME-conn-NAME-{{ keys.dataspace_name }}{{ '.ds.dataspaceunit-project.eu' if keys.environment == 'PRO' else ':19193' }}
   vocabularies:
     connector:
-      {{ 'https' if keys.environment == 'PRO' else 'http' }}://CHANGEME-conn-NAME-{{ keys.dataspace_name }}{{ '.ds.inesdata-project.eu' if keys.environment == 'PRO' else ':19196' }}
+      {{ 'https' if keys.environment == 'PRO' else 'http' }}://CHANGEME-conn-NAME-{{ keys.dataspace_name }}{{ '.ds.dataspaceunit-project.eu' if keys.environment == 'PRO' else ':19196' }}
   jwt:
     secret:
       core:
@@ -40,7 +40,7 @@ backend:
 frontend:
   image: 
     name:
-      ghcr.io/inesdata/inesdata-public-portal-frontend
+      ghcr.io/dataspaceunit/dataspaceunit-public-portal-frontend
     tag:
       0.9.0
 services:
@@ -67,9 +67,9 @@ services:
 ingress:
   frontend:
     hostname:
-      {{ keys.dataspace_name }}{{ '.ds.inesdata-project.eu' if keys.environment == 'PRO' else '.dev.ds.inesdata.upm' }}
+      {{ keys.dataspace_name }}{{ '.ds.dataspaceunit-project.eu' if keys.environment == 'PRO' else '.dev.ds.dataspaceunit.upm' }}
   backend:
     hostname:
-      backend-{{ keys.dataspace_name }}{{ '.ds.inesdata-project.eu' if keys.environment == 'PRO' else '.dev.ds.inesdata.upm' }}
+      backend-{{ keys.dataspace_name }}{{ '.ds.dataspaceunit-project.eu' if keys.environment == 'PRO' else '.dev.ds.dataspaceunit.upm' }}
   protocol:
     {{ 'https' if keys.environment == 'PRO' else 'http' }}

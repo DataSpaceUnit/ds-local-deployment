@@ -1,4 +1,4 @@
-This repository contains the code for the automated deployment of elements of the INESData platform.
+This repository contains the code for the automated deployment of elements of the Dataspaceunit platform.
 
 It is based in Kubernetes and Helm charts.
 

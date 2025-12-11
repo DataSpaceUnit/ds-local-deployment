@@ -29,11 +29,11 @@ services:
 ingress:
   registration:
     hostname:
-      registration-service-{{ keys.dataspace_name }}{{ '.ds.inesdata-project.eu' if keys.environment == 'PRO' else '.dev.ds.inesdata.upm' }}
+      registration-service-{{ keys.dataspace_name }}{{ '.ds.dataspaceunit-project.eu' if keys.environment == 'PRO' else '.dev.ds.dataspaceunit.upm' }}
 hostAliases:
 - ip: "192.168.49.2"
   hostnames:
-  - "keycloak.dev.ed.inesdata.upm"
-  - "keycloak-admin.dev.ed.inesdata.upm"
-  - "minio.dev.ed.inesdata.upm"
-  - "console.minio-s3.dev.ed.inesdata.upm"
+  - "keycloak.dev.ed.dataspaceunit.upm"
+  - "keycloak-admin.dev.ed.dataspaceunit.upm"
+  - "minio.dev.ed.dataspaceunit.upm"
+  - "console.minio-s3.dev.ed.dataspaceunit.upm"

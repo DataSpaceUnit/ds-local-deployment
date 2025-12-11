@@ -1,4 +1,4 @@
-# This chart deploys a new connector in the INESData platform.
+# This chart deploys a new connector in the Dataspaceunit platform.
 #
 connector:
   name: {{ keys.connector_name }}
@@ -8,11 +8,11 @@ connector:
     name: ghcr.io/dataspaceunit/ds-connector
     tag: latest
   replicas: 1
-  jvmArgs: "{% if keys.environment == 'PRO'%}-Djavax.net.ssl.trustStore=/opt/connector/tls-cacerts/cacerts.jks -Djavax.net.ssl.trustStorePassword=inesdata{% endif %}"
+  jvmArgs: "{% if keys.environment == 'PRO'%}-Djavax.net.ssl.trustStore=/opt/connector/tls-cacerts/cacerts.jks -Djavax.net.ssl.trustStorePassword=dataspaceunit{% endif %}"
   configuration:
     configFilePath: /opt/connector/config/connector-configuration.properties
   ingress:
-    hostname: {{ keys.connector_name }}.{% if keys.environment == 'PRO'%}ds.inesdata-project.eu{% else %}dev.ds.inesdata.upm{% endif %}
+    hostname: {{ keys.connector_name }}.{% if keys.environment == 'PRO'%}ds.dataspaceunit-project.eu{% else %}dev.ds.dataspaceunit.upm{% endif %}
     protocol: {{ 'https' if keys.environment == 'PRO' else 'http' }}
   minio:
     accesskey: {{ keys.dataspace_name }}/{{ keys.connector_name }}/aws-access-key
@@ -61,7 +61,7 @@ services:
     bucket: {{ keys.dataspace_name }}-{{ keys.connector_name }}
     protocol: {{ 'https' if keys.environment == 'PRO' else 'http' }}
   registrationService:
-    hostname: {% if keys.environment == 'PRO' %}registration-service-{{ keys.dataspace_name }}.ds.inesdata-project.eu{% 
+    hostname: {% if keys.environment == 'PRO' %}registration-service-{{ keys.dataspace_name }}.ds.dataspaceunit-project.eu{% 
                                          else %}{{ keys.dataspace_name }}-registration-service:8080{% endif %}
     protocol: {{ 'https' if keys.environment == 'PRO' else 'http' }}
   vault:
@@ -71,8 +71,8 @@ services:
 hostAliases:
 - ip: "192.168.49.2"
   hostnames:
-  - "keycloak.dev.ed.inesdata.upm"
-  - "keycloak-admin.dev.ed.inesdata.upm"
-  - "minio.dev.ed.inesdata.upm"
-  - "console.minio-s3.dev.ed.inesdata.upm"
-  - "registration-service-demo.dev.ds.inesdata.upm"
+  - "keycloak.dev.ed.dataspaceunit.upm"
+  - "keycloak-admin.dev.ed.dataspaceunit.upm"
+  - "minio.dev.ed.dataspaceunit.upm"
+  - "console.minio-s3.dev.ed.dataspaceunit.upm"
+  - "registration-service-demo.dev.ds.dataspaceunit.upm"
