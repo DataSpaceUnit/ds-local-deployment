@@ -238,7 +238,7 @@ exit
 ```
 Muchas veces es necesario reiniciar el pod de Vault luego de esta tarea con el comando:
 ```bash
-kubectl delete common-srvs-vault-0 -n common-srvs
+kubectl delete pod common-srvs-vault-0 -n common-srvs
 ```
 
 Habiendo reiniciado el pod de Vault hay que repetir los pasos para realizar el unseal del mismo.
@@ -252,7 +252,7 @@ kubectl exec -it common-srvs-vault-0 -n common-srvs -- vault operator unseal <un
 https://gist.github.com/rutcreate/c0041e842f858ceb455b748809763ddb
 2. Comprobar la versión de python escribiendo lo siguiente
 ```bash
-python3 –version
+python3 –-version
 ```
 3. Situarnos en el directorio raíz
 4. Crear un nuevo Python environment. Este comando va a crear un nuevo directorio en la ruta
@@ -486,7 +486,7 @@ Finalmente se sale de la terminal del contenedor ejecutando
 exit
 ```
 6. Verificar que el fichero *connector/values-conn-citycouncil-demo.yaml* tenga al final las urls de los servicios comunes y que la ip de hostAliases sea la misma que resulta de ejecutar `minikube ip`. 
-Además en este punto también podemos incluir al final la url del segundo conector que vamos a desplegar más adelante. El final del fichero antes mencionado debería verse así:
+El final del fichero antes mencionado debería verse así:
 ```bash
 hostAliases:
 - ip: "192.168.49.2"
@@ -496,6 +496,9 @@ hostAliases:
   - "minio.dev.ed.dataspaceunit.upm"
   - "console.minio-s3.dev.ed.dataspaceunit.upm"
   - "registration-service-demo.dev.ds.dataspaceunit.upm"
+```
+Además en este punto también podemos incluir al final la url del segundo conector que vamos a desplegar más adelante.
+```bash
   - "conn-company-demo.dev.ds.dataspaceunit.upm"
 ```
 Cabe recalcar que para hacer descubribles los servicios en este ejemplo se usa el mecanismo de hostAliases lo que implica que cada conector que se despliegue hace necesario hacer un `helm upgrade` en los servicios comunes y en los conectores ya desplegados con la url del nuevo conector.
@@ -527,6 +530,8 @@ Por
 ejemplo:
 
 http://conn-citycouncil-demo.dev.ds.dataspaceunit.upm/dataspaceunit-connector-interface/
+
+Este link redirigirá a la pantalla de login de Keycloak para acceder a la interfaz del conector dentro del espacio de datos demo. Las credenciales de acceso son las que se encuentran en el fichero *deployments/DEV/demo/credentials-connector-conn-citycouncil-demo.json* bajo `connector_user` .
 
 **IMPORTANTE**: Recordad que para poder acceder a los servicios expuestos en Minikube es
 necesario ejecutar `minikube tunnel`
@@ -581,6 +586,8 @@ hostAliases:
   - "registration-service-demo.dev.ds.dataspaceunit.upm"
   - "conn-citycouncil-demo.dev.ds.dataspaceunit.upm"
 ```
+Hay que prestar especial atención especialmente a la última línea que contiene el hostname del otro conector ya instanciado.
+
 Finalmente desplegamos el conector utilizando helm. Para ello ejecutamos los siguientes
 comandos:
 ```bash
@@ -592,6 +599,8 @@ Se puede acceder a la interfaz del nuevo conector mediante la URL del conector p
 
 En este caso es
 http://conn-company-demo.dev.ds.dataspaceunit.upm/dataspaceunit-connector-interface/
+
+Para acceder con este nuevo conector las credenciales de acceso son las que se encuentran en el fichero *deployments/DEV/demo/credentials-connector-conn-company-demo.json* bajo `connector_user` .
 
 ## Portal público
 Antes de desplegar el portal público hay que crear un primer conector. El despliegue
