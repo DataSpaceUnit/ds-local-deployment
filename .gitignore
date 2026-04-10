@@ -1,4 +1,5 @@
 */charts/*.tgz
+*/*/charts/*.tgz
 .venv/
 legacy/
 deployments/

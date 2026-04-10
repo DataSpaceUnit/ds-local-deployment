@@ -1,0 +1,3560 @@
+NAME: common-srvs
+LAST DEPLOYED: Thu Feb 19 15:09:56 2026
+NAMESPACE: commons-srvs
+STATUS: pending-install
+REVISION: 1
+USER-SUPPLIED VALUES:
+keycloak:
+  adminIngress:
+    enabled: true
+    hostname: keycloak-admin.dev.ed.dataspaceunit.linkeddata.es
+    ingressClassName: nginx
+  auth:
+    adminPassword: aPassword1234
+    adminUser: admin
+  externalDatabase:
+    database: keycloak
+    host: '{{ .Release.Name }}-postgresql'
+    password: aPassword1234
+    port: 5432
+    user: keycloak
+  image:
+    repository: bitnamilegacy/keycloak
+    tag: 24.0.4-debian-12-r1
+  ingress:
+    enabled: true
+    hostname: keycloak.dev.ed.dataspaceunit.linkeddata.es
+    ingressClassName: nginx
+  keycloakConfigCli:
+    configuration:
+      master.json: |
+        {
+          "realm" : "master",
+          "attributes": {
+            "frontendUrl": "https://keycloak-admin.dev.ed.dataspaceunit.linkeddata.es",
+            "redirectUri": "https://keycloak-admin.dev.ed.dataspaceunit.linkeddata.es/*"
+          }
+        }
+    enabled: true
+    extraEnv:
+    - name: KEYCLOAK_USER
+      value: admin
+    - name: KEYCLOAK_PASSWORD
+      value: aPassword1234
+    - name: KEYCLOAK_PROXY
+      value: edge
+    - name: KEYCLOAK_ENABLE_HTTPS
+      value: "false"
+    - name: KEYCLOAK_HOSTNAME
+      value: keycloak.dev.ed.dataspaceunit.linkeddata.es
+    - name: KEYCLOAK_HOSTNAME_ADMIN
+      value: keycloak-admin.dev.ed.dataspaceunit.linkeddata.es
+    - name: KEYCLOAK_HOSTNAME_STRICT
+      value: "false"
+    - name: KEYCLOAK_HOSTNAME_STRICT_HTTPS
+      value: "false"
+    image:
+      repository: bitnamilegacy/keycloak-config-cli
+      tag: 5.12.0-debian-12-r4
+  postgresql:
+    enabled: false
+  production: true
+  proxy: edge
+  tls:
+    enabled: false
+minio:
+  consoleIngress:
+    enabled: true
+    hosts:
+    - console.minio-s3.dev.ed.dataspaceunit.linkeddata.es
+    ingressClassName: nginx
+  ingress:
+    enabled: true
+    hosts:
+    - minio.dev.ed.dataspaceunit.linkeddata.es
+    ingressClassName: nginx
+  mode: standalone
+  persistence:
+    enabled: false
+  replicas: 1
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 4Gi
+    requests:
+      cpu: 1000m
+      memory: 2Gi
+  rootPassword: aPassword1234
+  rootUser: admin
+postgresql:
+  auth:
+    database: keycloak
+    password: aPassword1234
+    postgresPassword: aPassword1234
+    username: keycloak
+  image:
+    repository: bitnamilegacy/postgresql
+    tag: 16.3.0-debian-12-r9
+  primary:
+    persistence:
+      enabled: true
+      size: 4Gi
+      storageClass: local-path
+vault:
+  injector:
+    enabled: false
+  server:
+    dataStorage:
+      enabled: true
+      size: 2Gi
+      storageClass: local-path
+  serviceAccount:
+    create: true
+    name: vault
+
+COMPUTED VALUES:
+keycloak:
+  adminIngress:
+    annotations: {}
+    apiVersion: ""
+    enabled: true
+    extraHosts: []
+    extraPaths: []
+    extraRules: []
+    extraTls: []
+    hostname: keycloak-admin.dev.ed.dataspaceunit.linkeddata.es
+    ingressClassName: nginx
+    labels: {}
+    path: '{{ .Values.httpRelativePath }}'
+    pathType: ImplementationSpecific
+    secrets: []
+    selfSigned: false
+    servicePort: http
+    tls: false
+  affinity: {}
+  args: []
+  auth:
+    adminPassword: aPassword1234
+    adminUser: admin
+    annotations: {}
+    existingSecret: ""
+    passwordSecretKey: ""
+  automountServiceAccountToken: true
+  autoscaling:
+    behavior:
+      scaleDown:
+        policies:
+        - periodSeconds: 300
+          type: Pods
+          value: 1
+        selectPolicy: Max
+        stabilizationWindowSeconds: 300
+      scaleUp:
+        policies: []
+        selectPolicy: Max
+        stabilizationWindowSeconds: 120
+    enabled: false
+    maxReplicas: 11
+    minReplicas: 1
+    targetCPU: ""
+    targetMemory: ""
+  cache:
+    enabled: true
+    stackFile: ""
+    stackName: kubernetes
+  clusterDomain: cluster.local
+  command: []
+  common:
+    exampleValue: common-chart
+    global:
+      compatibility:
+        openshift:
+          adaptSecurityContext: auto
+      imagePullSecrets: []
+      imageRegistry: ""
+      storageClass: ""
+  commonAnnotations: {}
+  commonLabels: {}
+  configuration: ""
+  containerPorts:
+    http: 8080
+    https: 8443
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    enabled: true
+    privileged: false
+    readOnlyRootFilesystem: true
+    runAsGroup: 1001
+    runAsNonRoot: true
+    runAsUser: 1001
+    seLinuxOptions: {}
+    seccompProfile:
+      type: RuntimeDefault
+  customLivenessProbe: {}
+  customReadinessProbe: {}
+  customStartupProbe: {}
+  diagnosticMode:
+    args:
+    - infinity
+    command:
+    - sleep
+    enabled: false
+  dnsConfig: {}
+  dnsPolicy: ""
+  enableDefaultInitContainers: true
+  enableServiceLinks: true
+  existingConfigmap: ""
+  externalDatabase:
+    annotations: {}
+    database: keycloak
+    existingSecret: ""
+    existingSecretDatabaseKey: ""
+    existingSecretHostKey: ""
+    existingSecretPasswordKey: ""
+    existingSecretPortKey: ""
+    existingSecretUserKey: ""
+    host: '{{ .Release.Name }}-postgresql'
+    password: aPassword1234
+    port: 5432
+    user: keycloak
+  extraContainerPorts: []
+  extraDeploy: []
+  extraEnvVars: []
+  extraEnvVarsCM: ""
+  extraEnvVarsSecret: ""
+  extraStartupArgs: ""
+  extraVolumeMounts: []
+  extraVolumes: []
+  fullnameOverride: ""
+  global:
+    compatibility:
+      openshift:
+        adaptSecurityContext: auto
+    imagePullSecrets: []
+    imageRegistry: ""
+    storageClass: ""
+  hostAliases: []
+  httpRelativePath: /
+  image:
+    debug: false
+    digest: ""
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+    registry: docker.io
+    repository: bitnamilegacy/keycloak
+    tag: 24.0.4-debian-12-r1
+  ingress:
+    annotations: {}
+    apiVersion: ""
+    enabled: true
+    extraHosts: []
+    extraPaths: []
+    extraRules: []
+    extraTls: []
+    hostname: keycloak.dev.ed.dataspaceunit.linkeddata.es
+    ingressClassName: nginx
+    labels: {}
+    path: '{{ .Values.httpRelativePath }}'
+    pathType: ImplementationSpecific
+    secrets: []
+    selfSigned: false
+    servicePort: http
+    tls: false
+  initContainers: []
+  initdbScripts: {}
+  initdbScriptsConfigMap: ""
+  keycloakConfigCli:
+    annotations:
+      helm.sh/hook: post-install,post-upgrade,post-rollback
+      helm.sh/hook-delete-policy: hook-succeeded,before-hook-creation
+      helm.sh/hook-weight: "5"
+    args: []
+    automountServiceAccountToken: true
+    backoffLimit: 1
+    cleanupAfterFinished:
+      enabled: false
+      seconds: 600
+    command: []
+    configuration:
+      master.json: |
+        {
+          "realm" : "master",
+          "attributes": {
+            "frontendUrl": "https://keycloak-admin.dev.ed.dataspaceunit.linkeddata.es",
+            "redirectUri": "https://keycloak-admin.dev.ed.dataspaceunit.linkeddata.es/*"
+          }
+        }
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      enabled: true
+      privileged: false
+      readOnlyRootFilesystem: true
+      runAsGroup: 1001
+      runAsNonRoot: true
+      runAsUser: 1001
+      seLinuxOptions: {}
+      seccompProfile:
+        type: RuntimeDefault
+    enabled: true
+    existingConfigmap: ""
+    extraEnv:
+    - name: KEYCLOAK_USER
+      value: admin
+    - name: KEYCLOAK_PASSWORD
+      value: aPassword1234
+    - name: KEYCLOAK_PROXY
+      value: edge
+    - name: KEYCLOAK_ENABLE_HTTPS
+      value: "false"
+    - name: KEYCLOAK_HOSTNAME
+      value: keycloak.dev.ed.dataspaceunit.linkeddata.es
+    - name: KEYCLOAK_HOSTNAME_ADMIN
+      value: keycloak-admin.dev.ed.dataspaceunit.linkeddata.es
+    - name: KEYCLOAK_HOSTNAME_STRICT
+      value: "false"
+    - name: KEYCLOAK_HOSTNAME_STRICT_HTTPS
+      value: "false"
+    extraEnvVars: []
+    extraEnvVarsCM: ""
+    extraEnvVarsSecret: ""
+    extraVolumeMounts: []
+    extraVolumes: []
+    hostAliases: []
+    image:
+      digest: ""
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+      registry: docker.io
+      repository: bitnamilegacy/keycloak-config-cli
+      tag: 5.12.0-debian-12-r4
+    initContainers: []
+    nodeSelector: {}
+    podAnnotations: {}
+    podLabels: {}
+    podSecurityContext:
+      enabled: true
+      fsGroup: 1001
+      fsGroupChangePolicy: Always
+      supplementalGroups: []
+      sysctls: []
+    podTolerations: []
+    resources: {}
+    resourcesPreset: small
+    sidecars: []
+  kubeVersion: ""
+  lifecycleHooks: {}
+  livenessProbe:
+    enabled: true
+    failureThreshold: 3
+    initialDelaySeconds: 300
+    periodSeconds: 1
+    successThreshold: 1
+    timeoutSeconds: 5
+  logging:
+    level: INFO
+    output: default
+  metrics:
+    enabled: false
+    prometheusRule:
+      enabled: false
+      groups: []
+      labels: {}
+      namespace: ""
+    service:
+      annotations:
+        prometheus.io/port: '{{ .Values.metrics.service.ports.http }}'
+        prometheus.io/scrape: "true"
+      extraPorts: []
+      ports:
+        http: 8080
+    serviceMonitor:
+      enabled: false
+      endpoints:
+      - path: '{{ include "keycloak.httpPath" . }}metrics'
+      - path: '{{ include "keycloak.httpPath" . }}realms/master/metrics'
+      honorLabels: false
+      interval: 30s
+      jobLabel: ""
+      labels: {}
+      metricRelabelings: []
+      namespace: ""
+      path: ""
+      port: http
+      relabelings: []
+      scrapeTimeout: ""
+      selector: {}
+  nameOverride: ""
+  namespaceOverride: ""
+  networkPolicy:
+    allowExternal: true
+    allowExternalEgress: true
+    enabled: true
+    extraEgress: []
+    extraIngress: []
+    ingressNSMatchLabels: {}
+    ingressNSPodMatchLabels: {}
+    kubeAPIServerPorts:
+    - 443
+    - 6443
+    - 8443
+  nodeAffinityPreset:
+    key: ""
+    type: ""
+    values: []
+  nodeSelector: {}
+  pdb:
+    create: false
+    maxUnavailable: ""
+    minAvailable: 1
+  podAffinityPreset: ""
+  podAnnotations: {}
+  podAntiAffinityPreset: soft
+  podLabels: {}
+  podManagementPolicy: Parallel
+  podSecurityContext:
+    enabled: true
+    fsGroup: 1001
+    fsGroupChangePolicy: Always
+    supplementalGroups: []
+    sysctls: []
+  postgresql:
+    architecture: standalone
+    auth:
+      database: bitnami_keycloak
+      existingSecret: ""
+      password: ""
+      postgresPassword: ""
+      username: bn_keycloak
+    enabled: false
+  priorityClassName: ""
+  production: true
+  proxy: edge
+  rbac:
+    create: false
+    rules: []
+  readinessProbe:
+    enabled: true
+    failureThreshold: 3
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 1
+  replicaCount: 1
+  resources: {}
+  resourcesPreset: small
+  revisionHistoryLimitCount: 10
+  schedulerName: ""
+  service:
+    annotations: {}
+    clusterIP: ""
+    externalTrafficPolicy: Cluster
+    extraHeadlessPorts: []
+    extraPorts: []
+    headless:
+      annotations: {}
+      extraPorts: []
+    http:
+      enabled: true
+    loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    nodePorts:
+      http: ""
+      https: ""
+    ports:
+      http: 80
+      https: 443
+    sessionAffinity: None
+    sessionAffinityConfig: {}
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    automountServiceAccountToken: false
+    create: true
+    extraLabels: {}
+    name: ""
+  sidecars: []
+  spi:
+    existingSecret: ""
+    hostnameVerificationPolicy: ""
+    passwordsSecret: ""
+    truststoreFilename: keycloak-spi.truststore.jks
+    truststorePassword: ""
+  startupProbe:
+    enabled: false
+    failureThreshold: 60
+    initialDelaySeconds: 30
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 1
+  statefulsetAnnotations: {}
+  terminationGracePeriodSeconds: ""
+  tls:
+    autoGenerated: false
+    enabled: false
+    existingSecret: ""
+    keystoreFilename: keycloak.keystore.jks
+    keystorePassword: ""
+    passwordsSecret: ""
+    truststoreFilename: keycloak.truststore.jks
+    truststorePassword: ""
+    usePem: false
+  tolerations: []
+  topologySpreadConstraints: []
+  updateStrategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+minio:
+  additionalAnnotations: {}
+  additionalLabels: {}
+  affinity: {}
+  bucketRoot: ""
+  buckets: []
+  certsPath: /etc/minio/certs/
+  clusterDomain: cluster.local
+  configPathmc: /etc/minio/mc/
+  consoleIngress:
+    annotations: {}
+    enabled: true
+    hosts:
+    - console.minio-s3.dev.ed.dataspaceunit.linkeddata.es
+    ingressClassName: nginx
+    labels: {}
+    path: /
+    tls: []
+  consoleService:
+    annotations: {}
+    externalIPs: []
+    externalTrafficPolicy: Cluster
+    loadBalancerSourceRanges: []
+    nodePort: 32001
+    port: "9001"
+    type: ClusterIP
+  customCommandJob:
+    exitCommand: ""
+    resources:
+      requests:
+        memory: 128Mi
+    securityContext:
+      enabled: false
+      runAsGroup: 1000
+      runAsUser: 1000
+  deploymentUpdate:
+    maxSurge: 100%
+    maxUnavailable: 0
+    type: RollingUpdate
+  drivesPerNode: 1
+  etcd:
+    clientCert: ""
+    clientCertKey: ""
+    corednsPathPrefix: ""
+    endpoints: []
+    pathPrefix: ""
+  existingSecret: ""
+  extraArgs: []
+  extraContainers: []
+  extraVolumeMounts: []
+  extraVolumes: []
+  fullnameOverride: ""
+  global: {}
+  ignoreChartChecksums: false
+  image:
+    pullPolicy: IfNotPresent
+    repository: quay.io/minio/minio
+    tag: RELEASE.2024-04-18T19-09-19Z
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: true
+    hosts:
+    - minio.dev.ed.dataspaceunit.linkeddata.es
+    ingressClassName: nginx
+    labels: {}
+    path: /
+    tls: []
+  makeBucketJob:
+    exitCommand: ""
+    resources:
+      requests:
+        memory: 128Mi
+    securityContext:
+      enabled: false
+      runAsGroup: 1000
+      runAsUser: 1000
+  makePolicyJob:
+    exitCommand: ""
+    resources:
+      requests:
+        memory: 128Mi
+    securityContext:
+      enabled: false
+      runAsGroup: 1000
+      runAsUser: 1000
+  makeServiceAccountJob:
+    exitCommand: ""
+    resources:
+      requests:
+        memory: 128Mi
+    securityContext:
+      enabled: false
+      runAsGroup: 1000
+      runAsUser: 1000
+  makeUserJob:
+    exitCommand: ""
+    resources:
+      requests:
+        memory: 128Mi
+    securityContext:
+      enabled: false
+      runAsGroup: 1000
+      runAsUser: 1000
+  mcImage:
+    pullPolicy: IfNotPresent
+    repository: quay.io/minio/mc
+    tag: RELEASE.2024-04-18T16-45-29Z
+  metrics:
+    serviceMonitor:
+      additionalLabels: {}
+      annotations: {}
+      enabled: false
+      includeNode: false
+      public: true
+      relabelConfigs: {}
+      relabelConfigsCluster: {}
+  minioAPIPort: "9000"
+  minioConsolePort: "9001"
+  mode: standalone
+  mountPath: /export
+  nameOverride: ""
+  networkPolicy:
+    allowExternal: true
+    egressEntities:
+    - kube-apiserver
+    enabled: false
+    flavor: kubernetes
+  nodeSelector: {}
+  oidc:
+    claimName: policy
+    claimPrefix: ""
+    clientId: minio
+    clientSecret: ""
+    comment: ""
+    configUrl: https://identity-provider-url/.well-known/openid-configuration
+    displayName: ""
+    enabled: false
+    existingClientIdKey: ""
+    existingClientSecretKey: ""
+    existingClientSecretName: ""
+    redirectUri: https://console-endpoint-url/oauth_callback
+    scopes: openid,profile,email
+  persistence:
+    accessMode: ReadWriteOnce
+    annotations: {}
+    enabled: false
+    existingClaim: ""
+    size: 500Gi
+    storageClass: ""
+    subPath: ""
+    volumeName: ""
+  podAnnotations: {}
+  podDisruptionBudget:
+    enabled: false
+    maxUnavailable: 1
+  podLabels: {}
+  policies: []
+  pools: 1
+  postJob:
+    affinity: {}
+    annotations: {}
+    nodeSelector: {}
+    podAnnotations: {}
+    securityContext:
+      enabled: false
+      fsGroup: 1000
+      runAsGroup: 1000
+      runAsUser: 1000
+    tolerations: []
+  priorityClassName: ""
+  replicas: 1
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 4Gi
+    requests:
+      cpu: 1000m
+      memory: 2Gi
+  rootPassword: aPassword1234
+  rootUser: admin
+  runtimeClassName: ""
+  securityContext:
+    enabled: true
+    fsGroup: 1000
+    fsGroupChangePolicy: OnRootMismatch
+    readOnlyRootFilesystem: false
+    runAsGroup: 1000
+    runAsUser: 1000
+  service:
+    annotations: {}
+    externalIPs: []
+    externalTrafficPolicy: Cluster
+    loadBalancerSourceRanges: []
+    nodePort: 32000
+    port: "9000"
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: minio-sa
+  statefulSetUpdate:
+    updateStrategy: RollingUpdate
+  svcaccts: []
+  tls:
+    certSecret: ""
+    enabled: false
+    privateKey: private.key
+    publicCrt: public.crt
+  tolerations: []
+  topologySpreadConstraints: []
+  trustedCertsSecret: ""
+  users:
+  - accessKey: console
+    policy: consoleAdmin
+    secretKey: console123
+postgresql:
+  architecture: standalone
+  audit:
+    clientMinMessages: error
+    logConnections: false
+    logDisconnections: false
+    logHostname: false
+    logLinePrefix: ""
+    logTimezone: ""
+    pgAuditLog: ""
+    pgAuditLogCatalog: "off"
+  auth:
+    database: keycloak
+    enablePostgresUser: true
+    existingSecret: ""
+    password: aPassword1234
+    postgresPassword: aPassword1234
+    replicationPassword: ""
+    replicationUsername: repl_user
+    secretKeys:
+      adminPasswordKey: postgres-password
+      replicationPasswordKey: replication-password
+      userPasswordKey: password
+    usePasswordFiles: false
+    username: keycloak
+  backup:
+    cronjob:
+      annotations: {}
+      command:
+      - /bin/sh
+      - -c
+      - pg_dumpall --clean --if-exists --load-via-partition-root --quote-all-identifiers
+        --no-password --file=${PGDUMP_DIR}/pg_dumpall-$(date '+%Y-%m-%d-%H-%M').pgdump
+      concurrencyPolicy: Allow
+      containerSecurityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        enabled: true
+        privileged: false
+        readOnlyRootFilesystem: true
+        runAsGroup: 1001
+        runAsNonRoot: true
+        runAsUser: 1001
+        seLinuxOptions: {}
+        seccompProfile:
+          type: RuntimeDefault
+      extraVolumeMounts: []
+      extraVolumes: []
+      failedJobsHistoryLimit: 1
+      labels: {}
+      networkPolicy:
+        enabled: true
+      nodeSelector: {}
+      podSecurityContext:
+        enabled: true
+        fsGroup: 1001
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
+      resources: {}
+      resourcesPreset: nano
+      restartPolicy: OnFailure
+      schedule: '@daily'
+      startingDeadlineSeconds: ""
+      storage:
+        accessModes:
+        - ReadWriteOnce
+        annotations: {}
+        enabled: true
+        existingClaim: ""
+        mountPath: /backup/pgdump
+        resourcePolicy: ""
+        size: 8Gi
+        storageClass: ""
+        subPath: ""
+        volumeClaimTemplates:
+          selector: {}
+      successfulJobsHistoryLimit: 3
+      timeZone: ""
+      tolerations: []
+      ttlSecondsAfterFinished: ""
+    enabled: false
+  clusterDomain: cluster.local
+  common:
+    exampleValue: common-chart
+    global:
+      compatibility:
+        openshift:
+          adaptSecurityContext: auto
+      imagePullSecrets: []
+      imageRegistry: ""
+      postgresql:
+        auth:
+          database: ""
+          existingSecret: ""
+          password: ""
+          postgresPassword: ""
+          secretKeys:
+            adminPasswordKey: ""
+            replicationPasswordKey: ""
+            userPasswordKey: ""
+          username: ""
+        service:
+          ports:
+            postgresql: ""
+      storageClass: ""
+  commonAnnotations: {}
+  commonLabels: {}
+  containerPorts:
+    postgresql: 5432
+  diagnosticMode:
+    args:
+    - infinity
+    command:
+    - sleep
+    enabled: false
+  extraDeploy: []
+  fullnameOverride: ""
+  global:
+    compatibility:
+      openshift:
+        adaptSecurityContext: auto
+    imagePullSecrets: []
+    imageRegistry: ""
+    postgresql:
+      auth:
+        database: ""
+        existingSecret: ""
+        password: ""
+        postgresPassword: ""
+        secretKeys:
+          adminPasswordKey: ""
+          replicationPasswordKey: ""
+          userPasswordKey: ""
+        username: ""
+      service:
+        ports:
+          postgresql: ""
+    storageClass: ""
+  image:
+    debug: false
+    digest: ""
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+    registry: docker.io
+    repository: bitnamilegacy/postgresql
+    tag: 16.3.0-debian-12-r9
+  kubeVersion: ""
+  ldap:
+    basedn: ""
+    binddn: ""
+    bindpw: ""
+    enabled: false
+    port: ""
+    prefix: ""
+    scheme: ""
+    searchAttribute: ""
+    searchFilter: ""
+    server: ""
+    suffix: ""
+    tls:
+      enabled: false
+    uri: ""
+  metrics:
+    collectors: {}
+    containerPorts:
+      metrics: 9187
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      enabled: true
+      privileged: false
+      readOnlyRootFilesystem: true
+      runAsGroup: 1001
+      runAsNonRoot: true
+      runAsUser: 1001
+      seLinuxOptions: {}
+      seccompProfile:
+        type: RuntimeDefault
+    customLivenessProbe: {}
+    customMetrics: {}
+    customReadinessProbe: {}
+    customStartupProbe: {}
+    enabled: false
+    extraEnvVars: []
+    image:
+      digest: ""
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+      registry: docker.io
+      repository: bitnami/postgres-exporter
+      tag: 0.15.0-debian-12-r31
+    livenessProbe:
+      enabled: true
+      failureThreshold: 6
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    prometheusRule:
+      enabled: false
+      labels: {}
+      namespace: ""
+      rules: []
+    readinessProbe:
+      enabled: true
+      failureThreshold: 6
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    resources: {}
+    resourcesPreset: nano
+    service:
+      annotations:
+        prometheus.io/port: '{{ .Values.metrics.service.ports.metrics }}'
+        prometheus.io/scrape: "true"
+      clusterIP: ""
+      ports:
+        metrics: 9187
+      sessionAffinity: None
+    serviceMonitor:
+      enabled: false
+      honorLabels: false
+      interval: ""
+      jobLabel: ""
+      labels: {}
+      metricRelabelings: []
+      namespace: ""
+      relabelings: []
+      scrapeTimeout: ""
+      selector: {}
+    startupProbe:
+      enabled: false
+      failureThreshold: 15
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+  nameOverride: ""
+  postgresqlDataDir: /bitnami/postgresql/data
+  postgresqlSharedPreloadLibraries: pgaudit
+  primary:
+    affinity: {}
+    annotations: {}
+    args: []
+    automountServiceAccountToken: false
+    command: []
+    configuration: ""
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      enabled: true
+      privileged: false
+      readOnlyRootFilesystem: true
+      runAsGroup: 1001
+      runAsNonRoot: true
+      runAsUser: 1001
+      seLinuxOptions: {}
+      seccompProfile:
+        type: RuntimeDefault
+    customLivenessProbe: {}
+    customReadinessProbe: {}
+    customStartupProbe: {}
+    existingConfigmap: ""
+    existingExtendedConfigmap: ""
+    extendedConfiguration: ""
+    extraEnvVars: []
+    extraEnvVarsCM: ""
+    extraEnvVarsSecret: ""
+    extraPodSpec: {}
+    extraVolumeMounts: []
+    extraVolumes: []
+    hostAliases: []
+    hostIPC: false
+    hostNetwork: false
+    initContainers: []
+    initdb:
+      args: ""
+      password: ""
+      postgresqlWalDir: ""
+      scripts: {}
+      scriptsConfigMap: ""
+      scriptsSecret: ""
+      user: ""
+    labels: {}
+    lifecycleHooks: {}
+    livenessProbe:
+      enabled: true
+      failureThreshold: 6
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    name: primary
+    networkPolicy:
+      allowExternal: true
+      allowExternalEgress: true
+      enabled: true
+      extraEgress: []
+      extraIngress: []
+      ingressNSMatchLabels: {}
+      ingressNSPodMatchLabels: {}
+    nodeAffinityPreset:
+      key: ""
+      type: ""
+      values: []
+    nodeSelector: {}
+    persistence:
+      accessModes:
+      - ReadWriteOnce
+      annotations: {}
+      dataSource: {}
+      enabled: true
+      existingClaim: ""
+      labels: {}
+      mountPath: /bitnami/postgresql
+      selector: {}
+      size: 4Gi
+      storageClass: local-path
+      subPath: ""
+      volumeName: data
+    persistentVolumeClaimRetentionPolicy:
+      enabled: false
+      whenDeleted: Retain
+      whenScaled: Retain
+    pgHbaConfiguration: ""
+    podAffinityPreset: ""
+    podAnnotations: {}
+    podAntiAffinityPreset: soft
+    podLabels: {}
+    podSecurityContext:
+      enabled: true
+      fsGroup: 1001
+      fsGroupChangePolicy: Always
+      supplementalGroups: []
+      sysctls: []
+    priorityClassName: ""
+    readinessProbe:
+      enabled: true
+      failureThreshold: 6
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    resources: {}
+    resourcesPreset: nano
+    schedulerName: ""
+    service:
+      annotations: {}
+      clusterIP: ""
+      externalTrafficPolicy: Cluster
+      extraPorts: []
+      headless:
+        annotations: {}
+      loadBalancerClass: ""
+      loadBalancerIP: ""
+      loadBalancerSourceRanges: []
+      nodePorts:
+        postgresql: ""
+      ports:
+        postgresql: 5432
+      sessionAffinity: None
+      sessionAffinityConfig: {}
+      type: ClusterIP
+    sidecars: []
+    standby:
+      enabled: false
+      primaryHost: ""
+      primaryPort: ""
+    startupProbe:
+      enabled: false
+      failureThreshold: 15
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    terminationGracePeriodSeconds: ""
+    tolerations: []
+    topologySpreadConstraints: []
+    updateStrategy:
+      rollingUpdate: {}
+      type: RollingUpdate
+  psp:
+    create: false
+  rbac:
+    create: false
+    rules: []
+  readReplicas:
+    affinity: {}
+    annotations: {}
+    args: []
+    automountServiceAccountToken: false
+    command: []
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      enabled: true
+      privileged: false
+      readOnlyRootFilesystem: true
+      runAsGroup: 1001
+      runAsNonRoot: true
+      runAsUser: 1001
+      seLinuxOptions: {}
+      seccompProfile:
+        type: RuntimeDefault
+    customLivenessProbe: {}
+    customReadinessProbe: {}
+    customStartupProbe: {}
+    extendedConfiguration: ""
+    extraEnvVars: []
+    extraEnvVarsCM: ""
+    extraEnvVarsSecret: ""
+    extraPodSpec: {}
+    extraVolumeMounts: []
+    extraVolumes: []
+    hostAliases: []
+    hostIPC: false
+    hostNetwork: false
+    initContainers: []
+    labels: {}
+    lifecycleHooks: {}
+    livenessProbe:
+      enabled: true
+      failureThreshold: 6
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    name: read
+    networkPolicy:
+      allowExternal: true
+      allowExternalEgress: true
+      enabled: true
+      extraEgress: []
+      extraIngress: []
+      ingressNSMatchLabels: {}
+      ingressNSPodMatchLabels: {}
+    nodeAffinityPreset:
+      key: ""
+      type: ""
+      values: []
+    nodeSelector: {}
+    persistence:
+      accessModes:
+      - ReadWriteOnce
+      annotations: {}
+      dataSource: {}
+      enabled: true
+      existingClaim: ""
+      labels: {}
+      mountPath: /bitnami/postgresql
+      selector: {}
+      size: 8Gi
+      storageClass: ""
+      subPath: ""
+    persistentVolumeClaimRetentionPolicy:
+      enabled: false
+      whenDeleted: Retain
+      whenScaled: Retain
+    podAffinityPreset: ""
+    podAnnotations: {}
+    podAntiAffinityPreset: soft
+    podLabels: {}
+    podSecurityContext:
+      enabled: true
+      fsGroup: 1001
+      fsGroupChangePolicy: Always
+      supplementalGroups: []
+      sysctls: []
+    priorityClassName: ""
+    readinessProbe:
+      enabled: true
+      failureThreshold: 6
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    replicaCount: 1
+    resources: {}
+    resourcesPreset: nano
+    schedulerName: ""
+    service:
+      annotations: {}
+      clusterIP: ""
+      externalTrafficPolicy: Cluster
+      extraPorts: []
+      headless:
+        annotations: {}
+      loadBalancerClass: ""
+      loadBalancerIP: ""
+      loadBalancerSourceRanges: []
+      nodePorts:
+        postgresql: ""
+      ports:
+        postgresql: 5432
+      sessionAffinity: None
+      sessionAffinityConfig: {}
+      type: ClusterIP
+    sidecars: []
+    startupProbe:
+      enabled: false
+      failureThreshold: 15
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    terminationGracePeriodSeconds: ""
+    tolerations: []
+    topologySpreadConstraints: []
+    updateStrategy:
+      rollingUpdate: {}
+      type: RollingUpdate
+  replication:
+    applicationName: my_application
+    numSynchronousReplicas: 0
+    synchronousCommit: "off"
+  serviceAccount:
+    annotations: {}
+    automountServiceAccountToken: false
+    create: true
+    name: ""
+  serviceBindings:
+    enabled: false
+  shmVolume:
+    enabled: true
+    sizeLimit: ""
+  tls:
+    autoGenerated: false
+    certCAFilename: ""
+    certFilename: ""
+    certKeyFilename: ""
+    certificatesSecret: ""
+    crlFilename: ""
+    enabled: false
+    preferServerCiphers: true
+  volumePermissions:
+    containerSecurityContext:
+      runAsGroup: 0
+      runAsNonRoot: false
+      runAsUser: 0
+      seLinuxOptions: {}
+      seccompProfile:
+        type: RuntimeDefault
+    enabled: false
+    image:
+      digest: ""
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+      registry: docker.io
+      repository: bitnami/os-shell
+      tag: 12-debian-12-r21
+    resources: {}
+    resourcesPreset: nano
+vault:
+  csi:
+    agent:
+      enabled: true
+      extraArgs: []
+      image:
+        pullPolicy: IfNotPresent
+        repository: hashicorp/vault
+        tag: 1.17.2
+      logFormat: standard
+      logLevel: info
+      resources: {}
+    daemonSet:
+      annotations: {}
+      extraLabels: {}
+      kubeletRootDir: /var/lib/kubelet
+      providersDir: /etc/kubernetes/secrets-store-csi-providers
+      securityContext:
+        container: {}
+        pod: {}
+      updateStrategy:
+        maxUnavailable: ""
+        type: RollingUpdate
+    debug: false
+    enabled: false
+    extraArgs: []
+    hmacSecretName: ""
+    image:
+      pullPolicy: IfNotPresent
+      repository: hashicorp/vault-csi-provider
+      tag: 1.4.3
+    livenessProbe:
+      failureThreshold: 2
+      initialDelaySeconds: 5
+      periodSeconds: 5
+      successThreshold: 1
+      timeoutSeconds: 3
+    pod:
+      affinity: {}
+      annotations: {}
+      extraLabels: {}
+      nodeSelector: {}
+      tolerations: []
+    priorityClassName: ""
+    readinessProbe:
+      failureThreshold: 2
+      initialDelaySeconds: 5
+      periodSeconds: 5
+      successThreshold: 1
+      timeoutSeconds: 3
+    resources: {}
+    serviceAccount:
+      annotations: {}
+      extraLabels: {}
+  global:
+    enabled: true
+    externalVaultAddr: ""
+    imagePullSecrets: []
+    namespace: ""
+    openshift: false
+    psp:
+      annotations: |
+        seccomp.security.alpha.kubernetes.io/allowedProfileNames: docker/default,runtime/default
+        apparmor.security.beta.kubernetes.io/allowedProfileNames: runtime/default
+        seccomp.security.alpha.kubernetes.io/defaultProfileName:  runtime/default
+        apparmor.security.beta.kubernetes.io/defaultProfileName:  runtime/default
+      enable: false
+    serverTelemetry:
+      prometheusOperator: false
+    tlsDisable: true
+  injector:
+    affinity: |
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: {{ template "vault.name" . }}-agent-injector
+                app.kubernetes.io/instance: "{{ .Release.Name }}"
+                component: webhook
+            topologyKey: kubernetes.io/hostname
+    agentDefaults:
+      cpuLimit: 500m
+      cpuRequest: 250m
+      memLimit: 128Mi
+      memRequest: 64Mi
+      template: map
+      templateConfig:
+        exitOnRetryFailure: true
+        staticSecretRenderInterval: ""
+    agentImage:
+      repository: hashicorp/vault
+      tag: 1.17.2
+    annotations: {}
+    authPath: auth/kubernetes
+    certs:
+      caBundle: ""
+      certName: tls.crt
+      keyName: tls.key
+    enabled: false
+    externalVaultAddr: ""
+    extraEnvironmentVars: {}
+    extraLabels: {}
+    failurePolicy: Ignore
+    hostNetwork: false
+    image:
+      pullPolicy: IfNotPresent
+      repository: hashicorp/vault-k8s
+      tag: 1.4.2
+    leaderElector:
+      enabled: true
+    livenessProbe:
+      failureThreshold: 2
+      initialDelaySeconds: 5
+      periodSeconds: 2
+      successThreshold: 1
+      timeoutSeconds: 5
+    logFormat: standard
+    logLevel: info
+    metrics:
+      enabled: false
+    namespaceSelector: {}
+    nodeSelector: {}
+    objectSelector: {}
+    podDisruptionBudget: {}
+    port: 8080
+    priorityClassName: ""
+    readinessProbe:
+      failureThreshold: 2
+      initialDelaySeconds: 5
+      periodSeconds: 2
+      successThreshold: 1
+      timeoutSeconds: 5
+    replicas: 1
+    resources: {}
+    revokeOnShutdown: false
+    securityContext:
+      container: {}
+      pod: {}
+    service:
+      annotations: {}
+    serviceAccount:
+      annotations: {}
+    startupProbe:
+      failureThreshold: 12
+      initialDelaySeconds: 5
+      periodSeconds: 5
+      successThreshold: 1
+      timeoutSeconds: 5
+    strategy: {}
+    tolerations: []
+    topologySpreadConstraints: []
+    webhook:
+      annotations: {}
+      failurePolicy: Ignore
+      matchPolicy: Exact
+      namespaceSelector: {}
+      objectSelector: |
+        matchExpressions:
+        - key: app.kubernetes.io/name
+          operator: NotIn
+          values:
+          - {{ template "vault.name" . }}-agent-injector
+      timeoutSeconds: 30
+    webhookAnnotations: {}
+  server:
+    affinity: |
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: {{ template "vault.name" . }}
+                app.kubernetes.io/instance: "{{ .Release.Name }}"
+                component: server
+            topologyKey: kubernetes.io/hostname
+    annotations: {}
+    auditStorage:
+      accessMode: ReadWriteOnce
+      annotations: {}
+      enabled: false
+      labels: {}
+      mountPath: /vault/audit
+      size: 10Gi
+    authDelegator:
+      enabled: true
+    configAnnotation: false
+    dataStorage:
+      accessMode: ReadWriteOnce
+      annotations: {}
+      enabled: true
+      labels: {}
+      mountPath: /vault/data
+      size: 2Gi
+      storageClass: local-path
+    dev:
+      devRootToken: root
+      enabled: false
+    enabled: '-'
+    enterpriseLicense:
+      secretKey: license
+      secretName: ""
+    extraArgs: ""
+    extraEnvironmentVars: {}
+    extraLabels: {}
+    extraSecretEnvironmentVars: []
+    extraVolumes: []
+    ha:
+      config: |
+        ui = true
+
+        listener "tcp" {
+          tls_disable = 1
+          address = "[::]:8200"
+          cluster_address = "[::]:8201"
+        }
+        storage "consul" {
+          path = "vault"
+          address = "HOST_IP:8500"
+        }
+
+        service_registration "kubernetes" {}
+
+        # Example configuration for using auto-unseal, using Google Cloud KMS. The
+        # GKMS keys must already exist, and the cluster must have a service account
+        # that is authorized to access GCP KMS.
+        #seal "gcpckms" {
+        #   project     = "vault-helm-dev-246514"
+        #   region      = "global"
+        #   key_ring    = "vault-helm-unseal-kr"
+        #   crypto_key  = "vault-helm-unseal-key"
+        #}
+
+        # Example configuration for enabling Prometheus metrics.
+        # If you are using Prometheus Operator you can enable a ServiceMonitor resource below.
+        # You may wish to enable unauthenticated metrics in the listener block above.
+        #telemetry {
+        #  prometheus_retention_time = "30s"
+        #  disable_hostname = true
+        #}
+      disruptionBudget:
+        enabled: true
+      enabled: false
+      raft:
+        config: |
+          ui = true
+
+          listener "tcp" {
+            tls_disable = 1
+            address = "[::]:8200"
+            cluster_address = "[::]:8201"
+            # Enable unauthenticated metrics access (necessary for Prometheus Operator)
+            #telemetry {
+            #  unauthenticated_metrics_access = "true"
+            #}
+          }
+
+          storage "raft" {
+            path = "/vault/data"
+          }
+
+          service_registration "kubernetes" {}
+        enabled: false
+        setNodeId: false
+      replicas: 3
+    hostAliases: []
+    hostNetwork: false
+    image:
+      pullPolicy: IfNotPresent
+      repository: hashicorp/vault
+      tag: 1.17.2
+    ingress:
+      activeService: true
+      annotations: {}
+      enabled: false
+      extraPaths: []
+      hosts:
+      - host: chart-example.local
+        paths: []
+      ingressClassName: ""
+      labels: {}
+      pathType: Prefix
+      tls: []
+    livenessProbe:
+      enabled: false
+      execCommand: []
+      failureThreshold: 2
+      initialDelaySeconds: 60
+      path: /v1/sys/health?standbyok=true
+      periodSeconds: 5
+      port: 8200
+      successThreshold: 1
+      timeoutSeconds: 3
+    logFormat: ""
+    logLevel: ""
+    networkPolicy:
+      egress: []
+      enabled: false
+      ingress:
+      - from:
+        - namespaceSelector: {}
+        ports:
+        - port: 8200
+          protocol: TCP
+        - port: 8201
+          protocol: TCP
+    nodeSelector: {}
+    persistentVolumeClaimRetentionPolicy: {}
+    postStart: []
+    preStopSleepSeconds: 5
+    priorityClassName: ""
+    readinessProbe:
+      enabled: true
+      failureThreshold: 2
+      initialDelaySeconds: 5
+      periodSeconds: 5
+      port: 8200
+      successThreshold: 1
+      timeoutSeconds: 3
+    resources: {}
+    route:
+      activeService: true
+      annotations: {}
+      enabled: false
+      host: chart-example.local
+      labels: {}
+      tls:
+        termination: passthrough
+    service:
+      active:
+        annotations: {}
+        enabled: true
+      annotations: {}
+      enabled: true
+      externalTrafficPolicy: Cluster
+      instanceSelector:
+        enabled: true
+      ipFamilies: []
+      ipFamilyPolicy: ""
+      port: 8200
+      publishNotReadyAddresses: true
+      standby:
+        annotations: {}
+        enabled: true
+      targetPort: 8200
+    serviceAccount:
+      annotations: {}
+      create: true
+      createSecret: false
+      extraLabels: {}
+      name: ""
+      serviceDiscovery:
+        enabled: true
+    shareProcessNamespace: false
+    standalone:
+      config: |
+        ui = true
+
+        listener "tcp" {
+          tls_disable = 1
+          address = "[::]:8200"
+          cluster_address = "[::]:8201"
+          # Enable unauthenticated metrics access (necessary for Prometheus Operator)
+          #telemetry {
+          #  unauthenticated_metrics_access = "true"
+          #}
+        }
+        storage "file" {
+          path = "/vault/data"
+        }
+
+        # Example configuration for using auto-unseal, using Google Cloud KMS. The
+        # GKMS keys must already exist, and the cluster must have a service account
+        # that is authorized to access GCP KMS.
+        #seal "gcpckms" {
+        #   project     = "vault-helm-dev"
+        #   region      = "global"
+        #   key_ring    = "vault-helm-unseal-kr"
+        #   crypto_key  = "vault-helm-unseal-key"
+        #}
+
+        # Example configuration for enabling Prometheus metrics in your config.
+        #telemetry {
+        #  prometheus_retention_time = "30s"
+        #  disable_hostname = true
+        #}
+      enabled: '-'
+    statefulSet:
+      annotations: {}
+      securityContext:
+        container: {}
+        pod: {}
+    terminationGracePeriodSeconds: 10
+    tolerations: []
+    topologySpreadConstraints: []
+    updateStrategyType: OnDelete
+  serverTelemetry:
+    prometheusRules:
+      enabled: false
+      rules: []
+      selectors: {}
+    serviceMonitor:
+      authorization: {}
+      enabled: false
+      interval: 30s
+      scrapeTimeout: 10s
+      selectors: {}
+      tlsConfig: {}
+  serviceAccount:
+    create: true
+    name: vault
+  ui:
+    activeVaultPodOnly: false
+    annotations: {}
+    enabled: false
+    externalPort: 8200
+    externalTrafficPolicy: Cluster
+    publishNotReadyAddresses: true
+    serviceIPFamilies: []
+    serviceIPFamilyPolicy: ""
+    serviceType: ClusterIP
+    targetPort: 8200
+
+HOOKS:
+---
+# Source: dataspaceunit-ds-common/charts/vault/templates/tests/server-test.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: common-srvs-vault-server-test
+  namespace: commons-srvs
+  annotations:
+    "helm.sh/hook": test
+spec:
+  
+  containers:
+    - name: common-srvs-server-test
+      image: hashicorp/vault:1.17.2
+      imagePullPolicy: IfNotPresent
+      env:
+        - name: VAULT_ADDR
+          value: http://common-srvs-vault.commons-srvs.svc:8200
+        
+      command:
+        - /bin/sh
+        - -c
+        - |
+          echo "Checking for sealed info in 'vault status' output"
+          ATTEMPTS=10
+          n=0
+          until [ "$n" -ge $ATTEMPTS ]
+          do
+            echo "Attempt" $n...
+            vault status -format yaml | grep -E '^sealed: (true|false)' && break
+            n=$((n+1))
+            sleep 5
+          done
+          if [ $n -ge $ATTEMPTS ]; then
+            echo "timed out looking for sealed info in 'vault status' output"
+            exit 1
+          fi
+
+          exit 0
+      volumeMounts:
+  volumes:
+  restartPolicy: Never
+---
+# Source: dataspaceunit-ds-common/charts/keycloak/templates/keycloak-config-cli-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: common-srvs-keycloak-keycloak-config-cli
+  namespace: "commons-srvs"
+  labels:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/version: 24.0.4
+    helm.sh/chart: keycloak-21.2.2
+    app.kubernetes.io/component: keycloak-config-cli
+  annotations:
+    helm.sh/hook: post-install,post-upgrade,post-rollback
+    helm.sh/hook-delete-policy: hook-succeeded,before-hook-creation
+    helm.sh/hook-weight: "5"
+spec:
+  backoffLimit: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: common-srvs
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: keycloak
+        app.kubernetes.io/version: 24.0.4
+        helm.sh/chart: keycloak-21.2.2
+        app.kubernetes.io/component: keycloak-config-cli
+      annotations:
+        checksum/configuration: 4ca7f570ffddc21c4d97c7b94bfc4e1ad8b5c1047ae8e003175d85bcb0f887e5
+    spec:
+      serviceAccountName: common-srvs-keycloak
+      
+      restartPolicy: Never
+      securityContext:
+        fsGroup: 1001
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
+      automountServiceAccountToken: true
+      containers:
+        - name: keycloak-config-cli
+          image: docker.io/bitnamilegacy/keycloak-config-cli:5.12.0-debian-12-r4
+          imagePullPolicy: IfNotPresent
+          command:
+            - java
+            - -jar
+            - /opt/bitnami/keycloak-config-cli/keycloak-config-cli.jar
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsGroup: 1001
+            runAsNonRoot: true
+            runAsUser: 1001
+            seLinuxOptions: {}
+            seccompProfile:
+              type: RuntimeDefault
+          env:
+            - name: KEYCLOAK_URL
+              value: http://common-srvs-keycloak-headless:8080/
+            - name: KEYCLOAK_USER
+              value: "admin"
+            - name: KEYCLOAK_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: common-srvs-keycloak
+                  key: admin-password
+            - name: IMPORT_FILES_LOCATIONS
+              value: /config/*
+            - name: KEYCLOAK_AVAILABILITYCHECK_ENABLED
+              value: "true"
+          volumeMounts:
+            - name: empty-dir
+              mountPath: /tmp
+              subPath: tmp-dir
+            - name: config-volume
+              mountPath: /config
+          resources:
+            limits:
+              cpu: 750m
+              ephemeral-storage: 1024Mi
+              memory: 768Mi
+            requests:
+              cpu: 500m
+              ephemeral-storage: 50Mi
+              memory: 512Mi
+      volumes:
+        - name: empty-dir
+          emptyDir: {}
+        - name: config-volume
+          configMap:
+            name: common-srvs-keycloak-keycloak-config-cli-configmap
+---
+# Source: dataspaceunit-ds-common/charts/minio/templates/post-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: common-srvs-minio-post-job
+  labels:
+    app: minio-post-job
+    chart: minio-5.2.0
+    release: common-srvs
+    heritage: Helm
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+spec:
+  template:
+    metadata:
+      labels:
+        app: minio-job
+        release: common-srvs
+    spec:
+      restartPolicy: OnFailure      
+      volumes:
+        - name: etc-path
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}
+        - name: minio-configuration
+          projected:
+            sources:
+              - configMap:
+                  name: common-srvs-minio
+              - secret:
+                  name: common-srvs-minio
+      serviceAccountName: minio-sa
+      containers:
+        - name: minio-make-user
+          image: "quay.io/minio/mc:RELEASE.2024-04-18T16-45-29Z"
+          imagePullPolicy: IfNotPresent
+          command: [ "/bin/sh", "/config/add-user" ]
+          env:
+            - name: MINIO_ENDPOINT
+              value: common-srvs-minio
+            - name: MINIO_PORT
+              value: "9000"
+          volumeMounts:
+            - name: etc-path
+              mountPath: /etc/minio/mc
+            - name: tmp
+              mountPath: /tmp
+            - name: minio-configuration
+              mountPath: /config
+          resources:
+            requests:
+              memory: 128Mi
+MANIFEST:
+---
+# Source: dataspaceunit-ds-common/charts/keycloak/templates/networkpolicy.yaml
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: common-srvs-keycloak
+  namespace: "commons-srvs"
+  labels:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/version: 24.0.4
+    helm.sh/chart: keycloak-21.2.2
+    app.kubernetes.io/component: keycloak
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: common-srvs
+      app.kubernetes.io/name: keycloak
+      app.kubernetes.io/component: keycloak
+  policyTypes:
+    - Ingress
+    - Egress
+  egress:
+    - {}
+  ingress:
+    - ports:
+        - port: 7800
+        - port: 8080
+---
+# Source: dataspaceunit-ds-common/charts/postgresql/templates/primary/networkpolicy.yaml
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: common-srvs-postgresql
+  namespace: "commons-srvs"
+  labels:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.4.2
+    app.kubernetes.io/component: primary
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: common-srvs
+      app.kubernetes.io/name: postgresql
+      app.kubernetes.io/component: primary
+  policyTypes:
+    - Ingress
+    - Egress
+  egress:
+    - {}
+  ingress:
+    - ports:
+        - port: 5432
+---
+# Source: dataspaceunit-ds-common/charts/keycloak/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: common-srvs-keycloak
+  namespace: "commons-srvs"
+  labels:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/version: 24.0.4
+    helm.sh/chart: keycloak-21.2.2
+    app.kubernetes.io/component: keycloak
+automountServiceAccountToken: false
+---
+# Source: dataspaceunit-ds-common/charts/minio/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: "minio-sa"
+---
+# Source: dataspaceunit-ds-common/charts/postgresql/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: common-srvs-postgresql
+  namespace: "commons-srvs"
+  labels:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.4.2
+automountServiceAccountToken: false
+---
+# Source: dataspaceunit-ds-common/charts/vault/templates/server-serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: common-srvs-vault
+  namespace: commons-srvs
+  labels:
+    helm.sh/chart: vault-0.28.1
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: dataspaceunit-ds-common/charts/keycloak/templates/secret-external-db.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: common-srvs-externaldb
+  namespace: "commons-srvs"
+  labels:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/version: 24.0.4
+    helm.sh/chart: keycloak-21.2.2
+type: Opaque
+data:
+  db-password: "YVBhc3N3b3JkMTIzNA=="
+---
+# Source: dataspaceunit-ds-common/charts/keycloak/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: common-srvs-keycloak
+  namespace: "commons-srvs"
+  labels:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/version: 24.0.4
+    helm.sh/chart: keycloak-21.2.2
+    app.kubernetes.io/component: keycloak
+type: Opaque
+data:
+  admin-password: "YVBhc3N3b3JkMTIzNA=="
+---
+# Source: dataspaceunit-ds-common/charts/minio/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: common-srvs-minio
+  labels:
+    app: minio
+    chart: minio-5.2.0
+    release: common-srvs
+    heritage: Helm
+type: Opaque
+data:
+  rootUser: "YWRtaW4="
+  rootPassword: "YVBhc3N3b3JkMTIzNA=="
+---
+# Source: dataspaceunit-ds-common/charts/postgresql/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: common-srvs-postgresql
+  namespace: "commons-srvs"
+  labels:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.4.2
+type: Opaque
+data:
+  postgres-password: "YVBhc3N3b3JkMTIzNA=="
+  password: "YVBhc3N3b3JkMTIzNA=="
+  # We don't auto-generate LDAP password when it's not provided as we do for other passwords
+---
+# Source: dataspaceunit-ds-common/charts/keycloak/templates/configmap-env-vars.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-srvs-keycloak-env-vars
+  namespace: "commons-srvs"
+  labels:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/version: 24.0.4
+    helm.sh/chart: keycloak-21.2.2
+    app.kubernetes.io/component: keycloak
+data:
+  KEYCLOAK_ADMIN: "admin"
+  KEYCLOAK_HTTP_PORT: "8080"
+  KEYCLOAK_PROXY: "edge"
+  KEYCLOAK_ENABLE_STATISTICS: "false"
+  KEYCLOAK_DATABASE_HOST: "common-srvs-postgresql"
+  KEYCLOAK_DATABASE_PORT: "5432"
+  KEYCLOAK_DATABASE_NAME: "keycloak"
+  KEYCLOAK_DATABASE_USER: "keycloak"
+  KEYCLOAK_PRODUCTION:  "true"
+  KEYCLOAK_ENABLE_HTTPS: "false"
+  KEYCLOAK_CACHE_TYPE: "ispn"
+  KEYCLOAK_CACHE_STACK: "kubernetes"
+  JAVA_OPTS_APPEND: "-Djgroups.dns.query=common-srvs-keycloak-headless.commons-srvs.svc.cluster.local"
+  KEYCLOAK_LOG_OUTPUT: "default"
+  KEYCLOAK_LOG_LEVEL: "INFO"
+---
+# Source: dataspaceunit-ds-common/charts/keycloak/templates/keycloak-config-cli-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-srvs-keycloak-keycloak-config-cli-configmap
+  namespace: "commons-srvs"
+  labels:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/version: 24.0.4
+    helm.sh/chart: keycloak-21.2.2
+    app.kubernetes.io/component: keycloak-config-cli
+data:
+  master.json: |
+    {
+      "realm" : "master",
+      "attributes": {
+        "frontendUrl": "https://keycloak-admin.dev.ed.dataspaceunit.linkeddata.es",
+        "redirectUri": "https://keycloak-admin.dev.ed.dataspaceunit.linkeddata.es/*"
+      }
+    }
+---
+# Source: dataspaceunit-ds-common/charts/minio/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-srvs-minio
+  labels:
+    app: minio
+    chart: minio-5.2.0
+    release: common-srvs
+    heritage: Helm
+data:
+  initialize: |-
+    #!/bin/sh
+    set -e # Have script exit in the event of a failed command.
+    MC_CONFIG_DIR="/etc/minio/mc/"
+    MC="/usr/bin/mc --insecure --config-dir ${MC_CONFIG_DIR}"
+    
+    # connectToMinio
+    # Use a check-sleep-check loop to wait for MinIO service to be available
+    connectToMinio() {
+    	SCHEME=$1
+    	ATTEMPTS=0
+    	LIMIT=29 # Allow 30 attempts
+    	set -e   # fail if we can't read the keys.
+    	ACCESS=$(cat /config/rootUser)
+    	SECRET=$(cat /config/rootPassword)
+    	set +e # The connections to minio are allowed to fail.
+    	echo "Connecting to MinIO server: $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT"
+    	MC_COMMAND="${MC} alias set myminio $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT $ACCESS $SECRET"
+    	$MC_COMMAND
+    	STATUS=$?
+    	until [ $STATUS = 0 ]; do
+    		ATTEMPTS=$(expr $ATTEMPTS + 1)
+    		echo \"Failed attempts: $ATTEMPTS\"
+    		if [ $ATTEMPTS -gt $LIMIT ]; then
+    			exit 1
+    		fi
+    		sleep 2 # 1 second intervals between attempts
+    		$MC_COMMAND
+    		STATUS=$?
+    	done
+    	set -e # reset `e` as active
+    	return 0
+    }
+    
+    # checkBucketExists ($bucket)
+    # Check if the bucket exists, by using the exit code of `mc ls`
+    checkBucketExists() {
+    	BUCKET=$1
+    	CMD=$(${MC} stat myminio/$BUCKET >/dev/null 2>&1)
+    	return $?
+    }
+    
+    # createBucket ($bucket, $policy, $purge)
+    # Ensure bucket exists, purging if asked to
+    createBucket() {
+    	BUCKET=$1
+    	POLICY=$2
+    	PURGE=$3
+    	VERSIONING=$4
+    	OBJECTLOCKING=$5
+    
+    	# Purge the bucket, if set & exists
+    	# Since PURGE is user input, check explicitly for `true`
+    	if [ $PURGE = true ]; then
+    		if checkBucketExists $BUCKET; then
+    			echo "Purging bucket '$BUCKET'."
+    			set +e # don't exit if this fails
+    			${MC} rm -r --force myminio/$BUCKET
+    			set -e # reset `e` as active
+    		else
+    			echo "Bucket '$BUCKET' does not exist, skipping purge."
+    		fi
+    	fi
+    
+    	# Create the bucket if it does not exist and set objectlocking if enabled (NOTE: versioning will be not changed if OBJECTLOCKING is set because it enables versioning to the Buckets created)
+    	if ! checkBucketExists $BUCKET; then
+    		if [ ! -z $OBJECTLOCKING ]; then
+    			if [ $OBJECTLOCKING = true ]; then
+    				echo "Creating bucket with OBJECTLOCKING '$BUCKET'"
+    				${MC} mb --with-lock myminio/$BUCKET
+    			elif [ $OBJECTLOCKING = false ]; then
+    				echo "Creating bucket '$BUCKET'"
+    				${MC} mb myminio/$BUCKET
+    			fi
+    		elif [ -z $OBJECTLOCKING ]; then
+    			echo "Creating bucket '$BUCKET'"
+    			${MC} mb myminio/$BUCKET
+    		else
+    			echo "Bucket '$BUCKET' already exists."
+    		fi
+    	fi
+    
+    	# set versioning for bucket if objectlocking is disabled or not set
+    	if [ $OBJECTLOCKING = false ]; then
+    		if [ ! -z $VERSIONING ]; then
+    			if [ $VERSIONING = true ]; then
+    				echo "Enabling versioning for '$BUCKET'"
+    				${MC} version enable myminio/$BUCKET
+    			elif [ $VERSIONING = false ]; then
+    				echo "Suspending versioning for '$BUCKET'"
+    				${MC} version suspend myminio/$BUCKET
+    			fi
+    		fi
+    	else
+    		echo "Bucket '$BUCKET' versioning unchanged."
+    	fi
+    
+    	# At this point, the bucket should exist, skip checking for existence
+    	# Set policy on the bucket
+    	echo "Setting policy of bucket '$BUCKET' to '$POLICY'."
+    	${MC} anonymous set $POLICY myminio/$BUCKET
+    }
+    
+    # Try connecting to MinIO instance
+    scheme=http
+    connectToMinio $scheme
+    
+    
+    
+  add-user: |-
+    #!/bin/sh
+    set -e ; # Have script exit in the event of a failed command.
+    MC_CONFIG_DIR="/etc/minio/mc/"
+    MC="/usr/bin/mc --insecure --config-dir ${MC_CONFIG_DIR}"
+    
+    # AccessKey and secretkey credentials file are added to prevent shell execution errors caused by special characters.
+    # Special characters for example : ',",<,>,{,}
+    MINIO_ACCESSKEY_SECRETKEY_TMP="/tmp/accessKey_and_secretKey_tmp"
+    
+    # connectToMinio
+    # Use a check-sleep-check loop to wait for MinIO service to be available
+    connectToMinio() {
+      SCHEME=$1
+      ATTEMPTS=0 ; LIMIT=29 ; # Allow 30 attempts
+      set -e ; # fail if we can't read the keys.
+      ACCESS=$(cat /config/rootUser) ; SECRET=$(cat /config/rootPassword) ;
+      set +e ; # The connections to minio are allowed to fail.
+      echo "Connecting to MinIO server: $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT" ;
+      MC_COMMAND="${MC} alias set myminio $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT $ACCESS $SECRET" ;
+      $MC_COMMAND ;
+      STATUS=$? ;
+      until [ $STATUS = 0 ]
+      do
+        ATTEMPTS=`expr $ATTEMPTS + 1` ;
+        echo \"Failed attempts: $ATTEMPTS\" ;
+        if [ $ATTEMPTS -gt $LIMIT ]; then
+          exit 1 ;
+        fi ;
+        sleep 2 ; # 1 second intervals between attempts
+        $MC_COMMAND ;
+        STATUS=$? ;
+      done ;
+      set -e ; # reset `e` as active
+      return 0
+    }
+    
+    # checkUserExists ()
+    # Check if the user exists, by using the exit code of `mc admin user info`
+    checkUserExists() {
+      CMD=$(${MC} admin user info myminio $(head -1 $MINIO_ACCESSKEY_SECRETKEY_TMP) > /dev/null 2>&1)
+      return $?
+    }
+    
+    # createUser ($policy)
+    createUser() {
+      POLICY=$1
+      #check accessKey_and_secretKey_tmp file
+      if [[ ! -f $MINIO_ACCESSKEY_SECRETKEY_TMP ]];then
+        echo "credentials file does not exist"
+        return 1
+      fi
+      if [[ $(cat $MINIO_ACCESSKEY_SECRETKEY_TMP|wc -l) -ne 2 ]];then
+        echo "credentials file is invalid"
+        rm -f $MINIO_ACCESSKEY_SECRETKEY_TMP
+        return 1
+      fi
+      USER=$(head -1 $MINIO_ACCESSKEY_SECRETKEY_TMP)
+      # Create the user if it does not exist
+      if ! checkUserExists ; then
+        echo "Creating user '$USER'"
+        cat $MINIO_ACCESSKEY_SECRETKEY_TMP | ${MC} admin user add myminio
+      else
+        echo "User '$USER' already exists."
+      fi
+      #clean up credentials files.
+      rm -f $MINIO_ACCESSKEY_SECRETKEY_TMP
+    
+      # set policy for user
+      if [ ! -z $POLICY -a $POLICY != " " ] ; then
+          echo "Adding policy '$POLICY' for '$USER'"
+          set +e ; # policy already attach errors out, allow it.
+          ${MC} admin policy attach myminio $POLICY --user=$USER
+          set -e
+      else
+          echo "User '$USER' has no policy attached."
+      fi
+    }
+    
+    # Try connecting to MinIO instance
+    scheme=http
+    connectToMinio $scheme
+    
+    
+    
+    # Create the users
+    echo console > $MINIO_ACCESSKEY_SECRETKEY_TMP
+    echo console123 >> $MINIO_ACCESSKEY_SECRETKEY_TMP
+    createUser consoleAdmin
+    
+  add-policy: |-
+    #!/bin/sh
+    set -e ; # Have script exit in the event of a failed command.
+    MC_CONFIG_DIR="/etc/minio/mc/"
+    MC="/usr/bin/mc --insecure --config-dir ${MC_CONFIG_DIR}"
+    
+    # connectToMinio
+    # Use a check-sleep-check loop to wait for MinIO service to be available
+    connectToMinio() {
+      SCHEME=$1
+      ATTEMPTS=0 ; LIMIT=29 ; # Allow 30 attempts
+      set -e ; # fail if we can't read the keys.
+      ACCESS=$(cat /config/rootUser) ; SECRET=$(cat /config/rootPassword) ;
+      set +e ; # The connections to minio are allowed to fail.
+      echo "Connecting to MinIO server: $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT" ;
+      MC_COMMAND="${MC} alias set myminio $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT $ACCESS $SECRET" ;
+      $MC_COMMAND ;
+      STATUS=$? ;
+      until [ $STATUS = 0 ]
+      do
+        ATTEMPTS=`expr $ATTEMPTS + 1` ;
+        echo \"Failed attempts: $ATTEMPTS\" ;
+        if [ $ATTEMPTS -gt $LIMIT ]; then
+          exit 1 ;
+        fi ;
+        sleep 2 ; # 1 second intervals between attempts
+        $MC_COMMAND ;
+        STATUS=$? ;
+      done ;
+      set -e ; # reset `e` as active
+      return 0
+    }
+    
+    # checkPolicyExists ($policy)
+    # Check if the policy exists, by using the exit code of `mc admin policy info`
+    checkPolicyExists() {
+      POLICY=$1
+      CMD=$(${MC} admin policy info myminio $POLICY > /dev/null 2>&1)
+      return $?
+    }
+    
+    # createPolicy($name, $filename)
+    createPolicy () {
+      NAME=$1
+      FILENAME=$2
+    
+      # Create the name if it does not exist
+      echo "Checking policy: $NAME (in /config/$FILENAME.json)"
+      if ! checkPolicyExists $NAME ; then
+        echo "Creating policy '$NAME'"
+      else
+        echo "Policy '$NAME' already exists."
+      fi
+      ${MC} admin policy create myminio $NAME /config/$FILENAME.json
+    
+    }
+    
+    # Try connecting to MinIO instance
+    scheme=http
+    connectToMinio $scheme
+    
+    
+    
+  add-svcacct: |-
+    #!/bin/sh
+    set -e ; # Have script exit in the event of a failed command.
+    MC_CONFIG_DIR="/etc/minio/mc/"
+    MC="/usr/bin/mc --insecure --config-dir ${MC_CONFIG_DIR}"
+    
+    # AccessKey and secretkey credentials file are added to prevent shell execution errors caused by special characters.
+    # Special characters for example : ',",<,>,{,}
+    MINIO_ACCESSKEY_SECRETKEY_TMP="/tmp/accessKey_and_secretKey_svcacct_tmp"
+    
+    # connectToMinio
+    # Use a check-sleep-check loop to wait for MinIO service to be available
+    connectToMinio() {
+      SCHEME=$1
+      ATTEMPTS=0 ; LIMIT=29 ; # Allow 30 attempts
+      set -e ; # fail if we can't read the keys.
+      ACCESS=$(cat /config/rootUser) ; SECRET=$(cat /config/rootPassword) ;
+      set +e ; # The connections to minio are allowed to fail.
+      echo "Connecting to MinIO server: $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT" ;
+      MC_COMMAND="${MC} alias set myminio $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT $ACCESS $SECRET" ;
+      $MC_COMMAND ;
+      STATUS=$? ;
+      until [ $STATUS = 0 ]
+      do
+        ATTEMPTS=`expr $ATTEMPTS + 1` ;
+        echo \"Failed attempts: $ATTEMPTS\" ;
+        if [ $ATTEMPTS -gt $LIMIT ]; then
+          exit 1 ;
+        fi ;
+        sleep 2 ; # 2 second intervals between attempts
+        $MC_COMMAND ;
+        STATUS=$? ;
+      done ;
+      set -e ; # reset `e` as active
+      return 0
+    }
+    
+    # checkSvcacctExists ()
+    # Check if the svcacct exists, by using the exit code of `mc admin user svcacct info`
+    checkSvcacctExists() {
+      CMD=$(${MC} admin user svcacct info myminio $(head -1 $MINIO_ACCESSKEY_SECRETKEY_TMP) > /dev/null 2>&1)
+      return $?
+    }
+    
+    # createSvcacct ($user)
+    createSvcacct () {
+      USER=$1
+      FILENAME=$2
+      #check accessKey_and_secretKey_tmp file
+      if [[ ! -f $MINIO_ACCESSKEY_SECRETKEY_TMP ]];then
+        echo "credentials file does not exist"
+        return 1
+      fi
+      if [[ $(cat $MINIO_ACCESSKEY_SECRETKEY_TMP|wc -l) -ne 2 ]];then
+        echo "credentials file is invalid"
+        rm -f $MINIO_ACCESSKEY_SECRETKEY_TMP
+        return 1
+      fi
+      SVCACCT=$(head -1 $MINIO_ACCESSKEY_SECRETKEY_TMP)
+      # Create the svcacct if it does not exist
+      if ! checkSvcacctExists ; then
+        echo "Creating svcacct '$SVCACCT'"
+        # Check if policy file is define
+        if [ -z $FILENAME ]; then
+          ${MC} admin user svcacct add --access-key $(head -1 $MINIO_ACCESSKEY_SECRETKEY_TMP) --secret-key $(tail -n1 $MINIO_ACCESSKEY_SECRETKEY_TMP) myminio $USER
+        else
+          ${MC} admin user svcacct add --access-key $(head -1 $MINIO_ACCESSKEY_SECRETKEY_TMP) --secret-key $(tail -n1 $MINIO_ACCESSKEY_SECRETKEY_TMP) --policy /config/$FILENAME.json myminio $USER
+        fi
+      else
+        echo "Svcacct '$SVCACCT' already exists."
+      fi
+      #clean up credentials files.
+      rm -f $MINIO_ACCESSKEY_SECRETKEY_TMP
+    }
+    
+    # Try connecting to MinIO instance
+    scheme=http
+    connectToMinio $scheme
+    
+    
+    
+  custom-command: |-
+    #!/bin/sh
+    set -e ; # Have script exit in the event of a failed command.
+    MC_CONFIG_DIR="/etc/minio/mc/"
+    MC="/usr/bin/mc --insecure --config-dir ${MC_CONFIG_DIR}"
+    
+    # connectToMinio
+    # Use a check-sleep-check loop to wait for MinIO service to be available
+    connectToMinio() {
+      SCHEME=$1
+      ATTEMPTS=0 ; LIMIT=29 ; # Allow 30 attempts
+      set -e ; # fail if we can't read the keys.
+      ACCESS=$(cat /config/rootUser) ; SECRET=$(cat /config/rootPassword) ;
+      set +e ; # The connections to minio are allowed to fail.
+      echo "Connecting to MinIO server: $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT" ;
+      MC_COMMAND="${MC} alias set myminio $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT $ACCESS $SECRET" ;
+      $MC_COMMAND ;
+      STATUS=$? ;
+      until [ $STATUS = 0 ]
+      do
+        ATTEMPTS=`expr $ATTEMPTS + 1` ;
+        echo \"Failed attempts: $ATTEMPTS\" ;
+        if [ $ATTEMPTS -gt $LIMIT ]; then
+          exit 1 ;
+        fi ;
+        sleep 2 ; # 1 second intervals between attempts
+        $MC_COMMAND ;
+        STATUS=$? ;
+      done ;
+      set -e ; # reset `e` as active
+      return 0
+    }
+    
+    # runCommand ($@)
+    # Run custom mc command
+    runCommand() {
+      ${MC} "$@"
+      return $?
+    }
+    
+    # Try connecting to MinIO instance
+    scheme=http
+    connectToMinio $scheme
+---
+# Source: dataspaceunit-ds-common/charts/vault/templates/server-config-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-srvs-vault-config
+  namespace: commons-srvs
+  labels:
+    helm.sh/chart: vault-0.28.1
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+data:
+  extraconfig-from-values.hcl: |-
+    
+    disable_mlock = true
+    ui = true
+    
+    listener "tcp" {
+      tls_disable = 1
+      address = "[::]:8200"
+      cluster_address = "[::]:8201"
+      # Enable unauthenticated metrics access (necessary for Prometheus Operator)
+      #telemetry {
+      #  unauthenticated_metrics_access = "true"
+      #}
+    }
+    storage "file" {
+      path = "/vault/data"
+    }
+    
+    # Example configuration for using auto-unseal, using Google Cloud KMS. The
+    # GKMS keys must already exist, and the cluster must have a service account
+    # that is authorized to access GCP KMS.
+    #seal "gcpckms" {
+    #   project     = "vault-helm-dev"
+    #   region      = "global"
+    #   key_ring    = "vault-helm-unseal-kr"
+    #   crypto_key  = "vault-helm-unseal-key"
+    #}
+    
+    # Example configuration for enabling Prometheus metrics in your config.
+    #telemetry {
+    #  prometheus_retention_time = "30s"
+    #  disable_hostname = true
+    #}
+---
+# Source: dataspaceunit-ds-common/charts/vault/templates/server-clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: common-srvs-vault-server-binding
+  labels:
+    helm.sh/chart: vault-0.28.1
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:auth-delegator
+subjects:
+- kind: ServiceAccount
+  name: common-srvs-vault
+  namespace: commons-srvs
+---
+# Source: dataspaceunit-ds-common/charts/keycloak/templates/headless-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: common-srvs-keycloak-headless
+  namespace: "commons-srvs"
+  labels:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/version: 24.0.4
+    helm.sh/chart: keycloak-21.2.2
+    app.kubernetes.io/component: keycloak
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: http
+      port: 8080
+      protocol: TCP
+      targetPort: http
+  publishNotReadyAddresses: true
+  selector:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/component: keycloak
+---
+# Source: dataspaceunit-ds-common/charts/keycloak/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: common-srvs-keycloak
+  namespace: "commons-srvs"
+  labels:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/version: 24.0.4
+    helm.sh/chart: keycloak-21.2.2
+    app.kubernetes.io/component: keycloak
+spec:
+  type: ClusterIP
+  sessionAffinity: None
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: http
+      nodePort: null
+  selector:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/component: keycloak
+---
+# Source: dataspaceunit-ds-common/charts/minio/templates/console-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: common-srvs-minio-console
+  labels:
+    app: minio
+    chart: minio-5.2.0
+    release: common-srvs
+    heritage: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 9001
+      protocol: TCP
+      targetPort: 9001
+  selector:
+    app: minio
+    release: common-srvs
+---
+# Source: dataspaceunit-ds-common/charts/minio/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: common-srvs-minio
+  labels:
+    app: minio
+    chart: minio-5.2.0
+    release: common-srvs
+    heritage: Helm
+    monitoring: "true"
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 9000
+      protocol: TCP
+      targetPort: 9000
+  selector:
+    app: minio
+    release: common-srvs
+---
+# Source: dataspaceunit-ds-common/charts/postgresql/templates/primary/svc-headless.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: common-srvs-postgresql-hl
+  namespace: "commons-srvs"
+  labels:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.4.2
+    app.kubernetes.io/component: primary
+  annotations:
+    # Use this annotation in addition to the actual publishNotReadyAddresses
+    # field below because the annotation will stop being respected soon but the
+    # field is broken in some versions of Kubernetes:
+    # https://github.com/kubernetes/kubernetes/issues/58662
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  type: ClusterIP
+  clusterIP: None
+  # We want all pods in the StatefulSet to have their addresses published for
+  # the sake of the other Postgresql pods even before they're ready, since they
+  # have to be able to talk to each other in order to become ready.
+  publishNotReadyAddresses: true
+  ports:
+    - name: tcp-postgresql
+      port: 5432
+      targetPort: tcp-postgresql
+  selector:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/component: primary
+---
+# Source: dataspaceunit-ds-common/charts/postgresql/templates/primary/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: common-srvs-postgresql
+  namespace: "commons-srvs"
+  labels:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.4.2
+    app.kubernetes.io/component: primary
+spec:
+  type: ClusterIP
+  sessionAffinity: None
+  ports:
+    - name: tcp-postgresql
+      port: 5432
+      targetPort: tcp-postgresql
+      nodePort: null
+  selector:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/component: primary
+---
+# Source: dataspaceunit-ds-common/charts/vault/templates/server-headless-service.yaml
+# Service for Vault cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: common-srvs-vault-internal
+  namespace: commons-srvs
+  labels:
+    helm.sh/chart: vault-0.28.1
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+    vault-internal: "true"
+  annotations:
+
+spec:
+  clusterIP: None
+  publishNotReadyAddresses: true
+  ports:
+    - name: "http"
+      port: 8200
+      targetPort: 8200
+    - name: https-internal
+      port: 8201
+      targetPort: 8201
+  selector:
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/instance: common-srvs
+    component: server
+---
+# Source: dataspaceunit-ds-common/charts/vault/templates/server-service.yaml
+# Service for Vault cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: common-srvs-vault
+  namespace: commons-srvs
+  labels:
+    helm.sh/chart: vault-0.28.1
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+
+spec:
+  # We want the servers to become available even if they're not ready
+  # since this DNS is also used for join operations.
+  publishNotReadyAddresses: true
+  ports:
+    - name: http
+      port: 8200
+      targetPort: 8200
+    - name: https-internal
+      port: 8201
+      targetPort: 8201
+  selector:
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/instance: common-srvs
+    component: server
+---
+# Source: dataspaceunit-ds-common/charts/minio/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: common-srvs-minio
+  labels:
+    app: minio
+    chart: minio-5.2.0
+    release: common-srvs
+    heritage: Helm
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 0
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minio
+      release: common-srvs
+  template:
+    metadata:
+      name: common-srvs-minio
+      labels:
+        app: minio
+        release: common-srvs
+      annotations:
+        checksum/secrets: 94e6eb4668006225b9a3efb7f1803215bc70e1ff90db7a625568e774e410259b
+        checksum/config: 09af945a4a64ae7207622124afb3e7e2e8db1f00b2ef844cd9d5c1bbf8ebd83b
+    spec:
+      
+      serviceAccountName: minio-sa
+      containers:
+        - name: minio
+          image: "quay.io/minio/minio:RELEASE.2024-04-18T19-09-19Z"
+          imagePullPolicy: IfNotPresent
+          command:
+            - "/bin/sh"
+            - "-ce"
+            - "/usr/bin/docker-entrypoint.sh minio server /export -S /etc/minio/certs/ --address :9000 --console-address :9001"
+          volumeMounts:
+            - name: minio-user
+              mountPath: "/tmp/credentials"
+              readOnly: true
+            - name: export
+              mountPath: /export            
+          ports:
+            - name: http
+              containerPort: 9000
+            - name: http-console
+              containerPort: 9001
+          env:
+            - name: MINIO_ROOT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: common-srvs-minio
+                  key: rootUser
+            - name: MINIO_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: common-srvs-minio
+                  key: rootPassword
+            - name: MINIO_PROMETHEUS_AUTH_TYPE
+              value: "public"
+          resources:
+            limits:
+              cpu: 2000m
+              memory: 4Gi
+            requests:
+              cpu: 1000m
+              memory: 2Gi      
+      volumes:
+        - name: export
+          emptyDir: {}
+        - name: minio-user
+          secret:
+            secretName: common-srvs-minio
+---
+# Source: dataspaceunit-ds-common/charts/keycloak/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: common-srvs-keycloak
+  namespace: "commons-srvs"
+  labels:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/version: 24.0.4
+    helm.sh/chart: keycloak-21.2.2
+    app.kubernetes.io/component: keycloak
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  podManagementPolicy: Parallel
+  serviceName: common-srvs-keycloak-headless
+  updateStrategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: common-srvs
+      app.kubernetes.io/name: keycloak
+      app.kubernetes.io/component: keycloak
+  template:
+    metadata:
+      annotations:
+        checksum/configmap-env-vars: 2bd20c273e61a3353eb43f201c4f1ae18f5edff095fb0d7649edb14ad8ebe62c
+        checksum/secrets: 291933694c0e8ad968df37d1b2d52092f7ea3ecb852fcf8f0c160292b1b4bb7e
+      labels:
+        app.kubernetes.io/instance: common-srvs
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: keycloak
+        app.kubernetes.io/version: 24.0.4
+        helm.sh/chart: keycloak-21.2.2
+        app.kubernetes.io/component: keycloak
+    spec:
+      serviceAccountName: common-srvs-keycloak
+      
+      automountServiceAccountToken: true
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/instance: common-srvs
+                    app.kubernetes.io/name: keycloak
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      securityContext:
+        fsGroup: 1001
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
+      enableServiceLinks: true
+      initContainers:
+        - name: init-quarkus-directory
+          image: docker.io/bitnamilegacy/keycloak:24.0.4-debian-12-r1
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/bash
+          args:
+            - -ec
+            - |
+              #!/bin/bash
+              cp -r /opt/bitnami/keycloak/lib/quarkus/* /quarkus
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsGroup: 1001
+            runAsNonRoot: true
+            runAsUser: 1001
+            seLinuxOptions: {}
+            seccompProfile:
+              type: RuntimeDefault
+          resources:
+            limits:
+              cpu: 750m
+              ephemeral-storage: 1024Mi
+              memory: 768Mi
+            requests:
+              cpu: 500m
+              ephemeral-storage: 50Mi
+              memory: 512Mi
+          volumeMounts:
+            - name: empty-dir
+              mountPath: /tmp
+              subPath: tmp-dir
+            - name: empty-dir
+              mountPath: /quarkus
+              subPath: app-quarkus-dir
+      containers:
+        - name: keycloak
+          image: docker.io/bitnamilegacy/keycloak:24.0.4-debian-12-r1
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsGroup: 1001
+            runAsNonRoot: true
+            runAsUser: 1001
+            seLinuxOptions: {}
+            seccompProfile:
+              type: RuntimeDefault
+          env:
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+            - name: BITNAMI_DEBUG
+              value: "false"
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: common-srvs-keycloak
+                  key: admin-password
+            - name: KEYCLOAK_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: common-srvs-externaldb
+                  key: db-password
+            - name: KEYCLOAK_HTTP_RELATIVE_PATH
+              value: "/"
+            - name: KC_HOSTNAME_ADMIN_URL
+              value: "http://keycloak-admin.dev.ed.dataspaceunit.linkeddata.es"
+          envFrom:
+            - configMapRef:
+                name: common-srvs-keycloak-env-vars
+          resources:
+            limits:
+              cpu: 750m
+              ephemeral-storage: 1024Mi
+              memory: 768Mi
+            requests:
+              cpu: 500m
+              ephemeral-storage: 50Mi
+              memory: 512Mi
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: discovery
+              containerPort: 7800
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 300
+            periodSeconds: 1
+            successThreshold: 1
+            timeoutSeconds: 5
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+            httpGet:
+              path: /realms/master
+              port: http
+          volumeMounts:
+            - name: empty-dir
+              mountPath: /tmp
+              subPath: tmp-dir
+            - name: empty-dir
+              mountPath: /opt/bitnami/keycloak/conf
+              subPath: app-conf-dir
+            - name: empty-dir
+              mountPath: /opt/bitnami/keycloak/lib/quarkus
+              subPath: app-quarkus-dir
+            - name: empty-dir
+              mountPath: /opt/bitnami/keycloak/data
+              subPath: app-data-dir
+      volumes:
+        - name: empty-dir
+          emptyDir: {}
+---
+# Source: dataspaceunit-ds-common/charts/postgresql/templates/primary/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: common-srvs-postgresql
+  namespace: "commons-srvs"
+  labels:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.4.2
+    app.kubernetes.io/component: primary
+spec:
+  replicas: 1
+  serviceName: common-srvs-postgresql-hl
+  updateStrategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: common-srvs
+      app.kubernetes.io/name: postgresql
+      app.kubernetes.io/component: primary
+  template:
+    metadata:
+      name: common-srvs-postgresql
+      labels:
+        app.kubernetes.io/instance: common-srvs
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: postgresql
+        app.kubernetes.io/version: 16.3.0
+        helm.sh/chart: postgresql-15.4.2
+        app.kubernetes.io/component: primary
+    spec:
+      serviceAccountName: common-srvs-postgresql
+      
+      automountServiceAccountToken: false
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/instance: common-srvs
+                    app.kubernetes.io/name: postgresql
+                    app.kubernetes.io/component: primary
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      securityContext:
+        fsGroup: 1001
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
+      hostNetwork: false
+      hostIPC: false
+      containers:
+        - name: postgresql
+          image: docker.io/bitnamilegacy/postgresql:16.3.0-debian-12-r9
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsGroup: 1001
+            runAsNonRoot: true
+            runAsUser: 1001
+            seLinuxOptions: {}
+            seccompProfile:
+              type: RuntimeDefault
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+            - name: POSTGRESQL_PORT_NUMBER
+              value: "5432"
+            - name: POSTGRESQL_VOLUME_DIR
+              value: "/bitnami/postgresql"
+            - name: PGDATA
+              value: "/bitnami/postgresql/data"
+            # Authentication
+            - name: POSTGRES_USER
+              value: "keycloak"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: common-srvs-postgresql
+                  key: password
+            - name: POSTGRES_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: common-srvs-postgresql
+                  key: postgres-password
+            - name: POSTGRES_DATABASE
+              value: "keycloak"
+            # Replication
+            # Initdb
+            # Standby
+            # LDAP
+            - name: POSTGRESQL_ENABLE_LDAP
+              value: "no"
+            # TLS
+            - name: POSTGRESQL_ENABLE_TLS
+              value: "no"
+            # Audit
+            - name: POSTGRESQL_LOG_HOSTNAME
+              value: "false"
+            - name: POSTGRESQL_LOG_CONNECTIONS
+              value: "false"
+            - name: POSTGRESQL_LOG_DISCONNECTIONS
+              value: "false"
+            - name: POSTGRESQL_PGAUDIT_LOG_CATALOG
+              value: "off"
+            # Others
+            - name: POSTGRESQL_CLIENT_MIN_MESSAGES
+              value: "error"
+            - name: POSTGRESQL_SHARED_PRELOAD_LIBRARIES
+              value: "pgaudit"
+          ports:
+            - name: tcp-postgresql
+              containerPort: 5432
+          livenessProbe:
+            failureThreshold: 6
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - exec pg_isready -U "keycloak" -d "dbname=keycloak" -h 127.0.0.1 -p 5432
+          readinessProbe:
+            failureThreshold: 6
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - -e
+                - |
+                  exec pg_isready -U "keycloak" -d "dbname=keycloak" -h 127.0.0.1 -p 5432
+          resources:
+            limits:
+              cpu: 150m
+              ephemeral-storage: 1024Mi
+              memory: 192Mi
+            requests:
+              cpu: 100m
+              ephemeral-storage: 50Mi
+              memory: 128Mi
+          volumeMounts:
+            - name: empty-dir
+              mountPath: /tmp
+              subPath: tmp-dir
+            - name: empty-dir
+              mountPath: /opt/bitnami/postgresql/conf
+              subPath: app-conf-dir
+            - name: empty-dir
+              mountPath: /opt/bitnami/postgresql/tmp
+              subPath: app-tmp-dir
+            - name: dshm
+              mountPath: /dev/shm
+            - name: data
+              mountPath: /bitnami/postgresql
+      volumes:
+        - name: empty-dir
+          emptyDir: {}
+        - name: dshm
+          emptyDir:
+            medium: Memory
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: data
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "4Gi"
+        storageClassName: local-path
+---
+# Source: dataspaceunit-ds-common/charts/vault/templates/server-statefulset.yaml
+# StatefulSet to run the actual vault server cluster.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: common-srvs-vault
+  namespace: commons-srvs
+  labels:
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+spec:
+  serviceName: common-srvs-vault-internal
+  podManagementPolicy: Parallel
+  replicas: 1
+  updateStrategy:
+    type: OnDelete
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vault
+      app.kubernetes.io/instance: common-srvs
+      component: server
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: vault-0.28.1
+        app.kubernetes.io/name: vault
+        app.kubernetes.io/instance: common-srvs
+        component: server
+      annotations:
+    spec:
+      
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: vault
+                  app.kubernetes.io/instance: "common-srvs"
+                  component: server
+              topologyKey: kubernetes.io/hostname
+  
+      
+      
+      
+      terminationGracePeriodSeconds: 10
+      serviceAccountName: common-srvs-vault
+      
+      securityContext:
+        runAsNonRoot: true
+        runAsGroup: 1000
+        runAsUser: 100
+        fsGroup: 1000
+      hostNetwork: false
+      volumes:
+        
+        - name: config
+          configMap:
+            name: common-srvs-vault-config
+  
+        - name: home
+          emptyDir: {}
+      containers:
+        - name: vault
+          
+          image: hashicorp/vault:1.17.2
+          imagePullPolicy: IfNotPresent
+          command:
+          - "/bin/sh"
+          - "-ec"
+          args: 
+          - |
+            cp /vault/config/extraconfig-from-values.hcl /tmp/storageconfig.hcl;
+            [ -n "${HOST_IP}" ] && sed -Ei "s|HOST_IP|${HOST_IP?}|g" /tmp/storageconfig.hcl;
+            [ -n "${POD_IP}" ] && sed -Ei "s|POD_IP|${POD_IP?}|g" /tmp/storageconfig.hcl;
+            [ -n "${HOSTNAME}" ] && sed -Ei "s|HOSTNAME|${HOSTNAME?}|g" /tmp/storageconfig.hcl;
+            [ -n "${API_ADDR}" ] && sed -Ei "s|API_ADDR|${API_ADDR?}|g" /tmp/storageconfig.hcl;
+            [ -n "${TRANSIT_ADDR}" ] && sed -Ei "s|TRANSIT_ADDR|${TRANSIT_ADDR?}|g" /tmp/storageconfig.hcl;
+            [ -n "${RAFT_ADDR}" ] && sed -Ei "s|RAFT_ADDR|${RAFT_ADDR?}|g" /tmp/storageconfig.hcl;
+            /usr/local/bin/docker-entrypoint.sh vault server -config=/tmp/storageconfig.hcl 
+   
+          securityContext:
+            allowPrivilegeEscalation: false
+          env:
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: VAULT_K8S_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: VAULT_K8S_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: VAULT_ADDR
+              value: "http://127.0.0.1:8200"
+            - name: VAULT_API_ADDR
+              value: "http://$(POD_IP):8200"
+            - name: SKIP_CHOWN
+              value: "true"
+            - name: SKIP_SETCAP
+              value: "true"
+            - name: HOSTNAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: VAULT_CLUSTER_ADDR
+              value: "https://$(HOSTNAME).common-srvs-vault-internal:8201"
+            - name: HOME
+              value: "/home/vault"
+            
+            
+            
+          volumeMounts:
+          
+  
+    
+            - name: data
+              mountPath: /vault/data
+    
+  
+  
+            - name: config
+              mountPath: /vault/config
+  
+            - name: home
+              mountPath: /home/vault
+          ports:
+            - containerPort: 8200
+              name: http
+            - containerPort: 8201
+              name: https-internal
+            - containerPort: 8202
+              name: http-rep
+          readinessProbe:
+            # Check status; unsealed vault servers return 0
+            # The exit code reflects the seal status:
+            #   0 - unsealed
+            #   1 - error
+            #   2 - sealed
+            exec:
+              command: ["/bin/sh", "-ec", "vault status -tls-skip-verify"]
+            failureThreshold: 2
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 3
+          lifecycle:
+            # Vault container doesn't receive SIGTERM from Kubernetes
+            # and after the grace period ends, Kube sends SIGKILL.  This
+            # causes issues with graceful shutdowns such as deregistering itself
+            # from Consul (zombie services).
+            preStop:
+              exec:
+                command: [
+                  "/bin/sh", "-c",
+                  # Adding a sleep here to give the pod eviction a
+                  # chance to propagate, so requests will not be made
+                  # to this pod while it's terminating
+                  "sleep 5 && kill -SIGTERM $(pidof vault)",
+                ]
+      
+  
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      
+      
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 2Gi
+        storageClassName: local-path
+---
+# Source: dataspaceunit-ds-common/charts/keycloak/templates/admin-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: common-srvs-keycloak-admin
+  namespace: "commons-srvs"
+  labels:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/version: 24.0.4
+    helm.sh/chart: keycloak-21.2.2
+    app.kubernetes.io/component: keycloak
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: "keycloak-admin.dev.ed.dataspaceunit.linkeddata.es"
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: common-srvs-keycloak
+                port:
+                  name: http
+---
+# Source: dataspaceunit-ds-common/charts/keycloak/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: common-srvs-keycloak
+  namespace: "commons-srvs"
+  labels:
+    app.kubernetes.io/instance: common-srvs
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/version: 24.0.4
+    helm.sh/chart: keycloak-21.2.2
+    app.kubernetes.io/component: keycloak
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: "keycloak.dev.ed.dataspaceunit.linkeddata.es"
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: common-srvs-keycloak
+                port:
+                  name: http
+---
+# Source: dataspaceunit-ds-common/charts/minio/templates/console-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: common-srvs-minio-console
+  labels:
+    app: minio
+    chart: minio-5.2.0
+    release: common-srvs
+    heritage: Helm
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: common-srvs-minio-console
+                port: 
+                  number: 9001
+      host: "console.minio-s3.dev.ed.dataspaceunit.linkeddata.es"
+---
+# Source: dataspaceunit-ds-common/charts/minio/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: common-srvs-minio
+  labels:
+    app: minio
+    chart: minio-5.2.0
+    release: common-srvs
+    heritage: Helm
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: common-srvs-minio
+                port: 
+                  number: 9000
+      host: "minio.dev.ed.dataspaceunit.linkeddata.es"
+

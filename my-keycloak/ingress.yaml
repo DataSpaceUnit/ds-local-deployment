@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak
+spec:
+  tls:
+    - hosts:
+        - keycloak-admin.dev.ed.dataspaceunit.linkeddata.es
+  rules:
+    - host: keycloak-admin.dev.ed.dataspaceunit.linkeddata.es
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 8080

@@ -1,43 +1,47 @@
 minio:
   mode: standalone
   rootUser: admin
-  rootPassword: xxxxCHANGEMExxxx
+  rootPassword: aPassword1234
   replicas: 1
   persistence:
-    size: 5Ti
+    enabled: true
+    storageClass: local-path
+    size: 5Gi
   env:
     - name: MINIO_LOG_LEVEL
       value: "debug"
     - name: MINIO_HTTP_TRACE
       value: "/tmp/minio.log"
-  tls:
-    enabled: true
-    certSecret: minio-tls-cert
-    publicCrt: tls.crt
-    privateKey: tls.key
+  # tls:
+  #   enabled: true
+  #   certSecret: minio-tls-cert
+  #   publicCrt: tls.crt
+  #   privateKey: tls.key
   ingress:
     enabled: true
+    ingressClassName: nginx
     hosts:
-      - storage.ds.dataspaceunit-project.eu
+      - minio.dev.ed.dataspaceunit.linkeddata.es #storage.ds.dataspaceunit-project.eu
     annotations:
-      nginx.ingress.kubernetes.io/secure-backends: "true"
-      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    tls:
-      - secretName: minio-api-tls-cert
-        hosts:
-        - storage.ds.dataspaceunit-project.eu
+      # nginx.ingress.kubernetes.io/secure-backends: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP" # "HTTPS"
+    # tls:
+    #   - secretName: minio-api-tls-cert
+    #     hosts:
+    #     - storage.ds.dataspaceunit-project.eu
   consoleIngress:
     enabled: true
+    ingressClassName: nginx
     hosts:
-      - console-storage.ds.dataspaceunit-project.eu
+      - console.minio-s3.dev.ed.dataspaceunit.linkeddata.es #console-storage.ds.dataspaceunit-project.eu
     annotations:
-      nginx.ingress.kubernetes.io/secure-backends: "true"
-      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+      # nginx.ingress.kubernetes.io/secure-backends: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP" # "HTTPS"
       nginx.org/websocket-services: "comsrvs-minio-console"
-    tls:
-      - secretName: minio-console-tls-cert
-        hosts:
-        - console-storage.ds.dataspaceunit-project.eu
+    # tls:
+    #   - secretName: minio-console-tls-cert
+    #     hosts:
+    #     - console-storage.ds.dataspaceunit-project.eu
   resources:
     requests:
       memory: 2Gi

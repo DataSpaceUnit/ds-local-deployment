@@ -71,8 +71,8 @@ services:
 hostAliases:
 - ip: "192.168.49.2"
   hostnames:
-  - "keycloak.dev.ed.dataspaceunit.upm"
-  - "keycloak-admin.dev.ed.dataspaceunit.upm"
-  - "minio.dev.ed.dataspaceunit.upm"
-  - "console.minio-s3.dev.ed.dataspaceunit.upm"
+  - "keycloak.dev.ed.dataspaceunit.linkeddata.es"
+  - "keycloak-admin.dev.ed.dataspaceunit.linkeddata.es"
+  - "minio.dev.ed.dataspaceunit.linkeddata.es"
+  - "console.minio-s3.dev.ed.dataspaceunit.linkeddata.es"
   - "registration-service-demo.dev.ds.dataspaceunit.upm"
